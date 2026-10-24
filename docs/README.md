@@ -2,6 +2,10 @@
 
 Plataforma de capacitación en el corte de rosas de exportación (variedad roja **Freedom**) con realidad aumentada. Proyecto de **Sabana Hack 2026**.
 
+## Antes de RoseLab: El viaje de una rosa
+
+El juego [El viaje de una rosa](../viaje-de-una-rosa/index.html) es la puerta de entrada: una historia corta en la que el aprendiz corta una rosa, sigue su viaje hasta la clienta y aprende los tres rasgos del punto de corte (color, forma y tamaño) antes de practicar en la cama virtual. Los textos se editan en el bloque `CONFIGURACIÓN EDITABLE` de `viaje-de-una-rosa/js/juego.js`.
+
 ## Páginas
 
 | Página | Para quién | Qué encuentras |

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>El viaje de una rosa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<!--
+  EL VIAJE DE UNA ROSA — Sabana Hack 2026, reto "Corte de rosas"
+  Fase 1 (experiencia concreta, ciclo de Kolb).
+  Estructura: index.html (pantallas), css/styles.css (estilos) y
+  js/juego.js (lógica). Todo el arte es SVG generado por código y todo el
+  sonido se sintetiza con Web Audio API. Funciona sin servidor (doble clic).
+
+  Para editar textos: busque "CONFIGURACIÓN EDITABLE" en js/juego.js.
+  Para conectar el sistema robótico: busque "PUNTO DE INTEGRACIÓN" en js/juego.js.
+-->
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="app">
+  <div id="bg"></div>
+  <div id="texture" aria-hidden="true"></div>
+
+  <header id="topbar" hidden>
+    <div id="progress" role="group" aria-label="Progreso por capítulos">
+      <ol id="progressList"></ol>
+      <span id="progressLabel"></span>
+    </div>
+    <button class="tb-btn pts" id="btnRewards" aria-label="Mis logros"></button>
+    <button class="tb-btn" id="btnNotebook" aria-label="Cuaderno del aprendiz"></button>
+    <button class="tb-btn" id="btnSound" aria-label="Sonido"></button>
+    <button class="tb-btn" id="btnPause" aria-label="Pausa"></button>
+  </header>
+
+  <div id="calendar" hidden aria-live="polite">
+    <div id="calDay"><small id="calLbl">Día</small><b id="calNum">0</b></div>
+    <div id="calTrack"><div id="calFill"></div></div>
+    <div id="calEnds"><span id="calFrom"></span><span id="calTo"></span></div>
+  </div>
+
+  <main id="focal" aria-hidden="true"></main>
+  <div id="ui"></div>
+
+  <section id="dialog" hidden aria-label="Diálogo">
+    <div id="dlgPortrait" aria-hidden="true"></div>
+    <div id="dlgName"></div>
+    <p id="dlgText" aria-hidden="true"></p>
+    <p id="dlgMeasure" aria-hidden="true"></p>
+    <p id="dlgLive" class="sr" aria-live="polite"></p>
+    <div id="dlgFoot"><button id="dlgNext" type="button">Continuar</button></div>
+  </section>
+
+  <!-- Pantalla de inicio -->
+  <section id="title" class="overlay" hidden>
+    <div id="titleText"><h1 id="titleH1"></h1><p id="titleSub"></p></div>
+    <div id="titleRose" aria-hidden="true"></div>
+    <div id="titleFoot"><button class="btn primary" id="btnStart"></button><small id="titleNote"></small></div>
+  </section>
+
+  <!-- Elección de personaje -->
+  <section id="setup" class="overlay scrim" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+      <h2 id="setupTitle"></h2>
+      <div class="avatars" role="radiogroup" aria-labelledby="setupTitle" id="avatarGroup"></div>
+      <label class="lbl" for="nameInput" id="nameLbl"></label>
+      <input class="txt" id="nameInput" maxlength="18" autocomplete="off" autocapitalize="words">
+      <p class="err" id="nameErr" aria-live="polite"></p>
+      <button class="btn primary wide" id="btnBegin"></button>
+    </div>
+  </section>
+
+  <div id="banner" class="overlay" hidden><div class="card"><small id="banSmall"></small><strong id="banTitle"></strong><em id="banSub"></em></div></div>
+
+  <!-- Observación de la rosa -->
+  <section id="observe" class="overlay" hidden>
+    <div class="obs" role="dialog" aria-modal="true" aria-labelledby="obsTitle">
+      <div class="obs-head"><button class="obs-back" id="obsBack"></button><h2 id="obsTitle"></h2></div>
+      <div class="obs-stage" id="obsStage" aria-label="Rosa ampliada. Arrastra para girarla." role="img">
+        <div id="obsZoom"><div id="obsRose"></div></div>
+        <div class="obs-day" id="obsDay"><span id="obsDayTxt"></span></div>
+        <p class="obs-hint" id="obsHint"></p>
+        <div id="obsToastWrap"></div>
+        <div class="obs-stem" id="obsStem" hidden></div>
+      </div>
+      <div class="obs-tools">
+        <div class="seg" role="group" aria-label="Vistas de la rosa" id="obsViews"></div>
+        <div class="seg" role="group" aria-label="Acercar y medir">
+          <button id="zoomOut" aria-label="Alejar"></button><button id="zoomIn" aria-label="Acercar"></button><button id="btnRuler" aria-pressed="false"></button>
+        </div>
+      </div>
+      <div class="obs-actions"><button class="btn ghost" id="btnWait"></button><button class="btn primary" id="btnCut"></button></div>
+    </div>
+  </section>
+
+  <!-- Pausa -->
+  <section id="pause" class="overlay scrim" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+      <h2 id="pauseTitle"></h2>
+      <div class="menu">
+        <button class="btn accent wide" id="pResume"></button>
+        <div class="row"><span id="pSoundLbl"></span><button class="toggle" id="pSound"></button></div>
+        <div class="row"><span id="pMusicLbl"></span><button class="toggle" id="pMusic"></button></div>
+        <div class="row"><span id="pTypeLbl"></span><button class="toggle" id="pType"></button></div>
+        <div class="row"><span id="pSizeLbl"></span><span class="sizes"><button id="pSmaller" aria-label="Texto más pequeño">A−</button><button id="pBigger" aria-label="Texto más grande">A+</button></span></div>
+        <button class="btn ghost wide" id="pRewards"></button>
+        <button class="btn ghost wide" id="pNotebook"></button>
+        <button class="btn ghost wide" id="pFinish"></button>
+        <button class="btn ghost wide" id="pRestart"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cuaderno -->
+  <section id="notebook" class="overlay scrim" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="nbTitle">
+      <h2 id="nbTitle"></h2>
+      <ul class="notes" id="nbList"></ul>
+      <div class="panel-foot"><button class="btn accent wide" id="nbClose"></button></div>
+    </div>
+  </section>
+
+  <section id="rewards" class="overlay scrim" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rwTitle">
+      <h2 id="rwTitle"></h2>
+      <div id="rwBody"></div>
+      <div class="panel-foot"><button class="btn accent wide" id="rwClose"></button></div>
+    </div>
+  </section>
+
+  <section id="summary" class="overlay scrim" hidden><div class="sheet" id="sumSheet" role="dialog" aria-modal="true" aria-labelledby="sumTitle"></div></section>
+
+  <div id="toast" hidden role="status"></div>
+  <div id="curtain" aria-hidden="true"></div>
+</div>
+<script src="js/juego.js"></script>
+</body>
+</html>
