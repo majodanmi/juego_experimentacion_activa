@@ -6,6 +6,7 @@ Plataforma de capacitación en el corte de rosas de exportación (variedad roja 
 
 ## Ciclo completo
 
+- **Fase 1 · [El viaje de una rosa](viaje-de-una-rosa/index.html):** juego narrativo de 10 a 15 minutos (experiencia concreta del ciclo de Kolb). El aprendiz corta una rosa, la acompaña hasta la floristería en Miami y descubre por qué importa el punto de corte. Abre con doble clic, sin servidor.
 - **A · Recorrido del robot:** simulación de un robot que recorre el pasillo y fotografía las rosas desde abajo (fotos reales de la finca).
 - **B · Banco de rosas:** varias personas califican las rosas (inmadura, óptima o sobreabierta) y se comparan con el experto de la finca. Exporta Excel (.xlsx) y un dataset .zip con fotos para entrenar modelos.
 - **C · Entrenamiento:** cama de rosas 3D en AR, celular o computador. El escenario "Banco de la finca" arma la cama con las rosas reales ya calificadas.
@@ -26,6 +27,7 @@ assets/                   Logos
 assets/finca/fotos/       Fotos originales del recorrido (desde abajo, en la cama)
 assets/finca/rosas/       Recorte de cada rosa etiquetada
 docs/                     Wiki del proyecto
+viaje-de-una-rosa/        Fase 1: juego "El viaje de una rosa" (index.html, css/styles.css, js/juego.js)
 ```
 
 Three.js 0.160 se carga desde unpkg mediante el `importmap` de `index.html`. Las calificaciones y el historial se guardan en el `localStorage` del navegador.
