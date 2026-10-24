@@ -28,6 +28,7 @@
 .paso i{font-style:normal;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--g-osc);color:#fff;font-size:13px;margin-right:6px}
 .paso b{display:inline;color:var(--g-osc);font-size:14px}
 .paso span{display:block;margin-top:6px}
+a.paso{display:block;text-decoration:none}
 #estadoBanco{display:block;margin-top:6px;color:var(--coral);font-style:normal;font-weight:600}
 
 /* Recorrido: mapa + cámara del robot */

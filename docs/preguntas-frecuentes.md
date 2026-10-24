@@ -11,9 +11,10 @@ Los módulos de JavaScript no cargan desde `file://`. Usa un servidor local (`py
 - En iPhone/iPad no hay WebXR: usa **Usar la cámara del dispositivo**.
 - **Entrar en VR** solo aparece en gafas (Quest 3). En celular o tableta se ofrece AR o la cámara.
 
-### ¿AR o VR?
-- **AR:** ves tu espacio real con la cama de rosas encima. Es lo más parecido a estar en el invernadero, pero necesitas unos 3 × 2,5 m libres.
-- **VR:** todo es virtual, incluido el invernadero. Sirve cuando no hay espacio libre o hay mucha gente alrededor, porque te mueves con las palancas.
+### ¿Cuál es la diferencia entre "Entrar en AR" y "Entrar en VR"?
+- **AR (realidad aumentada):** ves tu espacio real y la cama de rosas aparece sobre el piso. Funciona en Quest 3 (passthrough) y en Android con Chrome. Es lo más parecido a estar en el invernadero, pero necesitas unos 3 × 2,5 m libres.
+- **VR (realidad virtual):** entras a un invernadero virtual y lo recorres con las palancas; no ves tu espacio real. Solo se ofrece en visores como las Quest 3. Sirve cuando no hay espacio libre o hay mucha gente alrededor.
+- La evaluación es la misma en los dos modos.
 
 ### En el celular no se mueve la vista
 En iPhone/iPad hay que **permitir el acceso al movimiento** cuando el navegador lo pida. Si no aparece el permiso, arrastra el dedo por la pantalla para mirar.

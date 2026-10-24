@@ -26,7 +26,7 @@ En el computador funciona la **vista previa** (WASD + ratón). El AR necesita HT
 2. En *Source* elige **Deploy from a branch**, rama **`main`**, carpeta **`/ (root)`**, y guarda.
 3. En uno o dos minutos queda en `https://majodanmi.github.io/juego_experimentacion_activa/`.
 
-GitHub Pages usa HTTPS, que es lo que exigen el AR (WebXR) y la cámara del celular.
+GitHub Pages usa HTTPS, que es lo que exigen el AR y la VR (WebXR) y la cámara del celular. El archivo vacío `.nojekyll` en la raíz evita que GitHub procese el sitio con Jekyll: se publica tal cual, sin compilar.
 
 ## Probar en cada dispositivo
 

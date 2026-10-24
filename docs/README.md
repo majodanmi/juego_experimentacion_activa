@@ -17,6 +17,7 @@ El juego [El viaje de una rosa](../viaje-de-una-rosa/index.html) es la puerta de
 | [Instalación y despliegue](instalacion-y-despliegue.md) | Equipo técnico | Ejecutar en local, publicar con GitHub Pages, probar en Quest 3 y celular |
 | [Arquitectura del código](arquitectura.md) | Desarrolladores | Estructura de archivos, módulos, flujo de pantallas y datos guardados |
 | [Parámetros del cultivo](parametros-del-cultivo.md) | Desarrolladores y agrónomos | Medidas de la cama, umbrales de madurez, escenarios y colores |
+| [Máquina del tiempo y plan de corte](maquina-del-tiempo-y-plan-de-corte.md) | Formadores, supervisores y jurado | La rosa día a día y la ruta óptima para decidir a qué cama ir primero |
 | [Cómo contribuir](contribuir.md) | Desarrolladores | Ramas, pull requests y convenciones del código |
 | [Preguntas frecuentes](preguntas-frecuentes.md) | Todos | Problemas comunes y cómo resolverlos |
 

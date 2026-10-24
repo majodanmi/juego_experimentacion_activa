@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Probar en línea** | [ROSE LAB AR](https://majodanmi.github.io/juego_experimentacion_activa/) · [El viaje de una rosa (fase 1)](https://majodanmi.github.io/juego_experimentacion_activa/viaje-de-una-rosa/index.html) |
+| **Probar en línea** | [ROSE LAB AR](https://majodanmi.github.io/juego_experimentacion_activa/) · [El viaje de una rosa (fase 1)](https://majodanmi.github.io/juego_experimentacion_activa/viaje-de-una-rosa/index.html) · [Máquina del tiempo](https://majodanmi.github.io/juego_experimentacion_activa/maquina-del-tiempo/) · [Plan de corte](https://majodanmi.github.io/juego_experimentacion_activa/plan-de-corte/) |
 | **Documentación** | [Wiki del proyecto](docs/README.md) |
 | **Variedad** | Rosa roja Freedom (exportación) |
 
@@ -18,6 +18,7 @@
 2. **A, recorrido del robot:** se simula un robot que fotografía las rosas desde abajo, como las ve el trabajador.
 3. **B, banco de rosas:** personas con experiencia califican esas fotos como inmadura, óptima o sobreabierta. La plataforma mide su acuerdo con el experto de la finca.
 4. **C, entrenamiento:** el aprendiz corta rosas en una cama 3D, en realidad aumentada o en realidad virtual, y recibe una evaluación objetiva.
+5. **Complementos:** la **máquina del tiempo** muestra cómo evoluciona una rosa día a día, y el **plan de corte** propone a qué cama ir primero con una ruta óptima (ambos ilustrativos).
 
 ## Nivel de desarrollo
 
@@ -27,6 +28,7 @@
 - **Recorrido del robot (A):** una simulación sobre 8 fotos reales de la finca, con las rosas detectadas marcadas en cada foto.
 - **Banco de rosas (B):** trae 73 rosas reales con la etiqueta de la empresa. Varias personas pueden calificarlas, con modo de entrenamiento. Calcula el consenso y el acuerdo (kappa de Cohen), y exporta a Excel (.xlsx) y a un dataset .zip con las fotos.
 - **Entrenamiento (C):** una cama de rosas 3D con escenarios de dificultad, entre ellos "Banco de la finca", que usa las rosas ya calificadas. Muestra una guía de la zona de corte y evalúa por categoría y por largo del tallo. Los resultados se exportan a CSV.
+- **Máquina del tiempo y plan de corte:** la rosa 3D día a día con el modo "¿Cuántos días le faltan?", y un plan por probabilidades con ruta óptima exacta (Held-Karp), simulación de tres estrategias y verificación de cálculos.
 - **Dispositivos:** en Meta Quest 3, el aprendiz elige entre AR (la cama en su propio espacio) y VR (un invernadero virtual que recorre con las palancas). También hay AR en Android (WebXR), cámara y giroscopio en iPhone/iPad, y vista previa 3D en el computador.
 
 ## Ventajas

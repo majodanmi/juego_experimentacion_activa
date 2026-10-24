@@ -1,6 +1,6 @@
 # Parámetros del cultivo
 
-← [Arquitectura del código](arquitectura.md) · [Inicio](README.md) · Siguiente: [Cómo contribuir](contribuir.md) →
+← [Arquitectura del código](arquitectura.md) · [Inicio](README.md) · Siguiente: [Máquina del tiempo y plan de corte](maquina-del-tiempo-y-plan-de-corte.md) →
 
 Todos están al inicio de [`js/main.js`](../js/main.js), en la sección **PARÁMETROS DEL CULTIVO**. Si la finca da medidas distintas, este es el lugar para ajustarlas.
 
