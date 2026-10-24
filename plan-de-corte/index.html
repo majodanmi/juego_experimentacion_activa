@@ -6,96 +6,13 @@
 <title>ROSE LAB · Plan de corte</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root{--g-osc:#005333;--g-med:#579966;--g-int:#008B56;--coral:#F04432;--crema:#F6F4EE;--tinta:#16382a;--texto:#3d5a4b;--suave:#eef5f0;--borde:#d9e6dd;--gris:#9fb3a7}
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Montserrat,Helvetica,Arial,sans-serif;background:radial-gradient(ellipse at top left,#e3efe6 0%,var(--crema) 55%);color:var(--tinta);min-height:100vh;padding:28px 16px}
-  .tarjeta{width:min(1180px,100%);background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,83,51,.14),0 2px 6px rgba(0,83,51,.06);margin:0 auto}
-  .banda{background:linear-gradient(120deg,var(--g-osc) 0%,var(--g-int) 100%);color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-  .banda img{height:34px;display:block} .banda .lema{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
-  .cuerpo{padding:28px 32px 30px}
-  h2{margin:0 0 4px;font-size:27px;font-weight:800;color:var(--g-osc)} h2 span{color:var(--coral)}
-  h3{margin:30px 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--g-int);display:flex;align-items:center;gap:8px}
-  h3:before{content:"";width:14px;height:14px;border-radius:50% 0 50% 50%;background:var(--coral);transform:rotate(-45deg);flex:none}
-  p{line-height:1.55;color:var(--texto);margin:8px 0}
-  b{color:var(--g-osc)}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
-  .tag{font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px;border:1.5px solid}
-  .tag.sim{color:#9a6a08;border-color:#ecd39a;background:#fff8e6} .tag.prop{color:#6b4ca0;border-color:#d8c8f0;background:#f6f1ff}
-  button{font:inherit;cursor:pointer;border:0;border-radius:999px;padding:11px 20px;font-size:14px;font-weight:700;transition:transform .12s,background .12s}
-  button:active{transform:scale(.97)}
-  .prim{background:var(--g-int);color:#fff;box-shadow:0 6px 16px rgba(0,139,86,.25)} .prim:hover{background:var(--g-osc)}
-  .sec{background:#fff;color:var(--g-osc);border:1.5px solid var(--borde)} .sec:hover{border-color:var(--g-med)}
-  .sec.on{background:var(--g-osc);color:#fff;border-color:var(--g-osc)}
-  label{display:block;font-size:13px;color:var(--texto);margin-bottom:5px;font-weight:600}
-  input[type=range]{width:100%;accent-color:var(--g-int)}
-  .nota{font-size:12.5px;color:#6f8a7b;line-height:1.5}
-  /* pasos */
-  .tres{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
-  .tres div{background:var(--suave);border-radius:16px;padding:14px 16px;font-size:13.5px;line-height:1.5;color:var(--texto)}
-  .tres i{font-style:normal;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--coral);color:#fff;font-weight:800;margin-right:8px}
-  .tres b{display:flex;align-items:center;font-size:14.5px;margin-bottom:6px}
-  /* controles */
-  .params{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;background:var(--suave);border-radius:16px;padding:14px 16px;margin-top:16px;align-items:end}
-  .params output{font-weight:700;color:var(--g-osc)}
-  details{margin-top:10px} summary{cursor:pointer;font-weight:700;color:var(--g-osc);font-size:13.5px}
-  .avanz{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;background:#fbfdfb;border:1.5px solid var(--borde);border-radius:14px;padding:12px 16px;margin-top:8px}
-  .check{display:flex;gap:7px;align-items:center;font-size:13px;font-weight:600;color:var(--texto)}
-  /* plan del día */
-  .dias{display:flex;gap:6px;flex-wrap:wrap}
-  .dias button{padding:8px 14px;font-size:13px}
-  .alcance{border-radius:14px;padding:11px 16px;font-size:14px;margin-top:12px;background:#fbfdfb;border:1.5px solid var(--borde);color:var(--texto)}
-  .grid{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-top:14px;align-items:start}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th{color:var(--g-int);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:8px 6px;border-bottom:1.5px solid var(--borde)}
-  td{padding:8px 6px;border-bottom:1px solid var(--borde);color:var(--texto);vertical-align:middle}
-  .num{font-size:18px;font-weight:800;color:var(--g-osc)}
-  .mini{display:flex;align-items:flex-end;gap:3px;height:30px}
-  .mini i{display:block;width:14px;border-radius:4px 4px 0 0;background:var(--g-int)} .mini i.m{background:#7fc39c} .mini i.p{background:#bfe0cd}
-  .urg{display:inline-block;background:#fdecea;color:var(--coral);font-weight:700;border-radius:8px;padding:3px 8px;font-size:12px}
-  .ok{display:inline-block;background:#eef8f2;color:var(--g-int);font-weight:700;border-radius:8px;padding:3px 8px;font-size:12px}
-  .vis{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--coral);color:#fff;font-weight:800;font-size:13px}
-  .mapa{width:100%;background:var(--suave);border:1px solid var(--borde);border-radius:16px}
-  .mapa text{font-family:Montserrat,sans-serif}
-  .rutas{display:flex;gap:8px;margin:10px 0}
-  .rutas button{padding:8px 14px;font-size:13px}
-  .comp2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .comp2>div{border:1.5px solid var(--borde);border-radius:14px;padding:10px 12px;font-size:13px;color:var(--texto)}
-  .comp2>div.gana{border-color:#9fd3b6;background:#f3fbf6}
-  .comp2 h4{margin:0 0 6px;font-size:13px;color:var(--g-osc)}
-  .comp2 p{margin:3px 0;font-size:13px} .comp2 p b{font-size:15px}
-  /* simulación */
-  .estr{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
-  .estr>div{border:1.5px solid var(--borde);border-radius:16px;padding:14px 16px}
-  .estr>div.gana{border-color:#9fd3b6;background:#f3fbf6}
-  .estr h4{margin:0 0 4px;font-size:15px;color:var(--g-osc)} .estr .desc{font-size:12px;color:#6f8a7b;margin:0 0 10px;min-height:32px}
-  .fila{display:flex;justify-content:space-between;font-size:13px;color:var(--texto);padding:5px 0;border-top:1px solid var(--borde)}
-  .fila b{font-size:15px}
-  .conclusion{background:var(--suave);border-left:4px solid var(--coral);border-radius:12px;padding:12px 16px;margin-top:12px;font-size:14px;line-height:1.55;color:var(--texto)}
-  /* verificación */
-  .formula{background:#fbfdfb;border:1.5px solid var(--borde);border-radius:12px;padding:10px 14px;font-size:13.5px;color:var(--tinta);margin:8px 0;line-height:1.7}
-  code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;background:var(--suave);padding:2px 6px;border-radius:6px;color:var(--g-osc)}
-  .caja{background:#fff;border:1.5px solid var(--borde);border-radius:16px;padding:14px}
-  .caja h4{margin:0 0 8px;font-size:14px;color:var(--g-osc)}
-  .dos{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
-  select{padding:8px 12px;border-radius:11px;border:1.5px solid var(--borde);font:inherit;font-size:14px;background:#fbfdfb}
-  .bar2{display:grid;grid-template-columns:90px 1fr 54px;align-items:center;gap:8px;font-size:12px;color:var(--texto);margin:5px 0}
-  .bar2 .t{height:12px;border-radius:6px;background:#e3ece6;overflow:hidden} .bar2 .t i{display:block;height:100%;border-radius:6px}
-  .bar2 b{text-align:right}
-  .bloque{border:1.5px solid var(--borde);border-radius:18px;padding:6px 18px 16px;margin-top:26px}
-  .bloque>summary{padding:10px 0;font-size:15px}
-  .valor{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
-  .valor div{border-left:4px solid var(--coral);background:var(--suave);border-radius:12px;padding:12px 16px;font-size:13px;line-height:1.55;color:var(--texto)}
-  .pie{margin-top:22px;padding-top:14px;border-top:1px solid var(--borde);font-size:12px;color:#7d9688;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-  .pie img{height:18px}
-  @media (max-width:900px){.grid,.valor,.estr,.tres,.dos,.params,.avanz{grid-template-columns:1fr}}
-</style>
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<div style="width:min(1180px,100%);margin:0 auto"><a href="../" style="display:inline-block;margin:0 auto 14px;max-width:1180px;width:100%;font-family:Montserrat,Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#005333;text-decoration:none">← Volver a Rose Lab</a>
+<div class="contenedor-volver"><a class="volver" href="../">← Volver a Rose Lab</a>
 </div>
 <div class="tarjeta">
-  <div class="banda"><img src="data:image/png;base64,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" alt="GHT"><span class="lema">Where Businesses Thrive</span></div>
+  <div class="banda"><img src="../assets/logo-ght-blanco.png" alt="GHT"><span class="lema">Where Businesses Thrive</span></div>
   <div class="cuerpo">
     <h2>Plan de corte · <span>¿a qué cama ir primero?</span></h2>
     <div class="chips"><span class="tag sim">Datos simulados: finca ficticia</span><span class="tag prop">Propuesta: predicciones con las fotos diarias del robot</span></div>
@@ -105,12 +22,12 @@
       <div><b><i>2</i>Sumar por cama</b>Así se sabe cuántas rosas listas tiene cada cama y cuántas se pierden si no se cortan hoy.</div>
       <div><b><i>3</i>Armar la mejor ruta</b>Con las horas del equipo y el tiempo de caminar, se calcula qué camas visitar y en qué orden para cortar más y perder menos.</div>
     </div>
-    <p style="margin-top:12px"><b>El trabajador sigue decidiendo qué rosa cortar.</b> El plan solo le dice dónde está el trabajo.</p>
+    <p class="mt-12"><b>El trabajador sigue decidiendo qué rosa cortar.</b> El plan solo le dice dónde está el trabajo.</p>
 
     <div class="params">
       <div><label>Horas del equipo para cortar · <output id="oCap"></output></label><input type="range" id="cap" min="1" max="3" step="0.25" value="2"></div>
       <div><label>Precisión de la predicción · <output id="oSig"></output></label><input type="range" id="sigma" min="0.3" max="2" step="0.1" value="0.8"><div class="nota">Error típico, en días. Más a la derecha = predicción menos precisa.</div></div>
-      <div><button class="sec" id="btnNueva" style="width:100%">Generar otra finca</button><div class="nota" style="margin-top:6px">12 camas en 2 naves, cada una en una fase distinta de su ciclo.</div></div>
+      <div><button class="sec ancho" id="btnNueva">Generar otra finca</button><div class="nota mt-6">12 camas en 2 naves, cada una en una fase distinta de su ciclo.</div></div>
     </div>
     <details><summary>Opciones avanzadas</summary>
       <div class="avanz">
@@ -126,12 +43,12 @@
     <div class="grid">
       <div>
         <table id="tabla"></table>
-        <p class="nota"><i style="display:inline-block;width:10px;height:10px;background:var(--g-int);border-radius:2px"></i> listas ese día · <i style="display:inline-block;width:10px;height:10px;background:#7fc39c;border-radius:2px"></i> al día siguiente · <i style="display:inline-block;width:10px;height:10px;background:#bfe0cd;border-radius:2px"></i> en dos días</p>
+        <p class="nota"><i class="ley ley-hoy"></i> listas ese día · <i class="ley ley-man"></i> al día siguiente · <i class="ley ley-pas"></i> en dos días</p>
       </div>
       <div>
         <div class="rutas"><button class="sec on" id="rOpt">Ruta óptima</button><button class="sec" id="rSim">Ruta simple</button></div>
         <div id="mapa"></div>
-        <div class="comp2" id="compRutas" style="margin-top:12px"></div>
+        <div class="comp2 mt-12" id="compRutas"></div>
         <p class="nota">La <b>ruta simple</b> va primero a las camas más urgentes y luego recorre el resto por nave, sin calcular el tiempo de caminar. La <b>ruta óptima</b> prueba todas las combinaciones de camas y órdenes posibles y elige la que corta más rosas valiosas dentro de las horas del equipo.</p>
       </div>
     </div>
@@ -161,7 +78,7 @@
         Se busca el conjunto de camas y el orden que <b>maximizan el valor</b> sin pasar de las horas del equipo. Con la revisión de seguridad, una cama que lleva 2 días sin visita suma <code>8</code> de valor: se prioriza sin consumir todo el tiempo cuando el equipo no da abasto. Con 12 camas se evalúan todas las combinaciones con programación dinámica (método de Held-Karp, problema de orientación): es la <b>solución exacta</b>. Para las 174 camas de una finca real se usaría una heurística que mejora la ruta por intercambios (2-opt).</div>
 
       <h3>3 · Ejemplo con una cama</h3>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><select id="selCama"></select><span class="nota" id="ejInfo"></span></div>
+      <div class="fila-ctrl"><select id="selCama"></select><span class="nota" id="ejInfo"></span></div>
       <div class="dos">
         <div class="caja"><h4>Algunas rosas de la cama</h4><table id="ejTabla"></table></div>
         <div class="caja"><h4>Suma de toda la cama</h4><div id="ejSuma"></div></div>
@@ -170,7 +87,7 @@
 
       <h3>4 · Prueba de calibración</h3>
       <p>Como la finca es simulada, se conoce el día real de cada rosa: se comparan las rosas esperadas con las que realmente estuvieron óptimas (12 camas × 7 días).</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="prim" id="btnCal">Correr la prueba</button><button class="sec" id="btnCSV">Descargar la finca simulada (CSV)</button></div>
+      <div class="fila-botones"><button class="prim" id="btnCal">Correr la prueba</button><button class="sec" id="btnCSV">Descargar la finca simulada (CSV)</button></div>
       <div id="resCal"></div>
 
       <h3>5 · Supuestos</h3>
@@ -187,208 +104,10 @@
       </table>
     </details>
 
-    <div class="pie"><span>ROSE LAB · Plan de corte · Sabana Hack 2026</span><img src="data:image/png;base64,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" alt="GHT"></div>
+    <div class="pie"><span>ROSE LAB · Plan de corte · Sabana Hack 2026</span><img src="../assets/logo-ght-color.png" alt="GHT"></div>
   </div>
 </div>
 
-<script>
-const $=id=>document.getElementById(id);
-const f1=x=>(+x).toFixed(1).replace('.',','), f0=x=>Math.round(x).toLocaleString('es-CO'), f3=x=>x.toFixed(3).replace('.',',');
-function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-let rnd=mulberry32(7);
-const gauss=()=>{ let u=0,v=0; while(!u)u=rnd(); while(!v)v=rnd(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); };
-function Phi(x){ const t=1/(1+0.2316419*Math.abs(x)), d=0.3989423*Math.exp(-x*x/2); const p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274)))); return x>0?1-p:p; }
-
-// ---------- Supuestos (minutos) ----------
-const BONO_SEG=8;               // revisar una cama pendiente de seguridad vale como 8 rosas
-const VENTANA=3, PESO=1.5, MIN_CAMA=6, MIN_TALLO=16/60, LAT=0.5, ENTRADA=2, DIAS_SIM=21;
-const DIAS=['Hoy','Mañana','En 2 días','En 3 días','En 4 días','En 5 días','En 6 días'];
-const capMin=()=>+$('cap').value*60, sigma=()=>+$('sigma').value, cambioNave=()=>+$('cnave').value;
-
-// ---------- Finca simulada ----------
-let finca=[], semilla=7, cachePred='';
-function generarFinca(sem){
-  semilla=sem; cachePred=''; rnd=mulberry32(sem); finca=[];
-  [[3,[38,39,40,41,42,43]],[4,[51,52,53,54,55,56]]].forEach(([nave,camas],ni)=>camas.forEach((cama,ci)=>{
-    const pico=Math.floor(rnd()*12)-1, disp=1+rnd()*2.5, n=70+Math.floor(rnd()*110), rosas=[];
-    for(let i=0;i<n;i++) rosas.push({ini:Math.round(pico+gauss()*disp), ruido:gauss()});
-    finca.push({cama,nave,ni,ci,rosas});
-  }));
-}
-// ---------- Predicción (con ajuste por cama opcional) ----------
-function prepararPred(){
-  const sig=sigma(), aj=$('ajuste').checked, clave=sig+'|'+aj+'|'+semilla; if(clave===cachePred) return; cachePred=clave;
-  finca.forEach(c=>{
-    const mus=c.rosas.map(r=>r.ini+r.ruido*sig), m=mus.reduce((a,b)=>a+b,0)/mus.length;
-    const v=Math.max(mus.reduce((a,b)=>a+(b-m)**2,0)/(mus.length-1)-sig*sig,0.09), vp=1/(1/(sig*sig)+1/v);
-    c.m=m; c.v=v;
-    c.rosas.forEach((r,i)=>{ r.mu=mus[i]; if(aj){ r.mp=vp*(mus[i]/(sig*sig)+m/v); r.sp=Math.sqrt(vp+1/12); } else { r.mp=mus[i]; r.sp=sig; } });
-  });
-}
-const pOptima=(r,d,hoy=0)=>Phi((d+0.5-(r.mp-hoy))/r.sp)-Phi((d-2.5-(r.mp-hoy))/r.sp);
-const pUltimo=(r,d,hoy=0)=>Phi((d+0.5-(r.mp-hoy)-2)/r.sp)-Phi((d-0.5-(r.mp-hoy)-2)/r.sp);
-const optimaReal=(r,d)=>d>=r.ini&&d<r.ini+VENTANA;
-
-// Valor esperado de cada cama para el día d (contando desde 'hoy'), sin las rosas ya cortadas
-function prever(d,cortadas,hoy=0){
-  prepararPred();
-  return finca.map(c=>{
-    const vivas=c.rosas.filter((r,i)=>!(cortadas&&cortadas[c.cama].has(i)));
-    const E=k=>vivas.reduce((a,r)=>a+pOptima(r,d+k,hoy),0), ult=vivas.reduce((a,r)=>a+pUltimo(r,d,hoy),0), e0=E(0);
-    return {c, cama:c.cama, ni:c.ni, ci:c.ci, e0, e1:E(1), e2:E(2), ult, valor:e0+PESO*ult, servicio:MIN_CAMA+e0*MIN_TALLO};
-  });
-}
-// ---------- Tiempos de caminar ----------
-const tEntrada=x=>ENTRADA+(x.ni===1?cambioNave():0)+LAT*x.ci;
-const tViaje=(a,b)=>a.ni===b.ni?LAT*Math.abs(a.ci-b.ci):LAT*a.ci+cambioNave()+LAT*b.ci;
-
-// ---------- Ruta simple: urgentes primero (agrupadas por nave) y luego barrido; elige camas sin contar el caminar ----------
-function rutaSimple(p,cap,quiere){
-  let libre=cap; const el=[];
-  p.slice().sort((a,b)=>b.valor-a.valor).forEach(x=>{ if(quiere(x)&&libre>=x.servicio){ libre-=x.servicio; el.push(x); } });
-  const urg=el.filter(x=>x.ult>=1), resto=el.filter(x=>x.ult<1), pu={}, pn={};
-  urg.forEach(x=>pu[x.ni]=(pu[x.ni]||0)+x.ult); resto.forEach(x=>pn[x.ni]=(pn[x.ni]||0)+x.valor);
-  urg.sort((a,b)=>a.ni!==b.ni?pu[b.ni]-pu[a.ni]:b.ult-a.ult);
-  resto.sort((a,b)=>a.ni!==b.ni?pn[b.ni]-pn[a.ni]:a.ci-b.ci);
-  return [...urg,...resto];
-}
-// ---------- Ruta óptima: problema de orientación resuelto exacto con programación dinámica (Held-Karp) ----------
-function rutaOptima(p,cap,quiere,obligatoria){
-  const C=p.filter(quiere), n=C.length; if(!n) return [];
-  const val=C.map(x=>x.valor+(obligatoria&&obligatoria(x)?BONO_SEG:0));
-  const N=1<<n, INF=1e9, best=new Float64Array(N*n).fill(INF), prev=new Int8Array(N*n).fill(-1);
-  for(let i=0;i<n;i++){ const t=tEntrada(C[i])+C[i].servicio; if(t<=cap) best[(1<<i)*n+i]=t; }
-  for(let m=1;m<N;m++) for(let i=0;i<n;i++){ const b=best[m*n+i]; if(b>=INF) continue;
-    for(let j=0;j<n;j++){ if(m&(1<<j)) continue; const nb=b+tViaje(C[i],C[j])+C[j].servicio; if(nb>cap) continue;
-      const k=(m|(1<<j))*n+j; if(nb<best[k]){ best[k]=nb; prev[k]=i; } } }
-  let mejor=-1, bv=-1, bt=INF;
-  for(let m=1;m<N;m++){ let v=0; for(let i=0;i<n;i++) if(m&(1<<i)) v+=val[i];
-    for(let i=0;i<n;i++){ const t=best[m*n+i]; if(t<INF&&(v>bv+1e-9||(Math.abs(v-bv)<1e-9&&t<bt))){ bv=v; bt=t; mejor=m*n+i; } } }
-  if(mejor<0) return [];
-  const orden=[]; let k=mejor;
-  while(k>=0){ const m=Math.floor(k/n), i=k%n; orden.unshift(C[i]); const pi=prev[k]; k=pi<0?-1:(m&~(1<<i))*n+pi; }
-  return orden;
-}
-// ---------- Recorrer una ruta (esperado o real) ----------
-function recorrer(orden,cap,cortaFn){   // cortaFn(x, maxTallos) -> tallos cortados
-  let t=0, caminar=0, cortes=0, ant=null; const visitadas=[];
-  for(const x of orden){
-    const tv=ant?tViaje(ant,x):tEntrada(x);
-    if(t+tv+MIN_CAMA>cap) break;
-    t+=tv; caminar+=tv;
-    const n=cortaFn(x,Math.max(0,Math.floor((cap-t-MIN_CAMA)/MIN_TALLO)));
-    t+=MIN_CAMA+n*MIN_TALLO; cortes+=n; visitadas.push(x); ant=x;
-  }
-  return {t,caminar,cortes,visitadas};
-}
-
-// ---------- Vista del plan ----------
-let diaSel=0, rutaVista='opt';
-function pintar(){
-  $('oCap').textContent=f1($('cap').value).replace(',0','')+' h'; $('oSig').textContent='±'+f1(sigma())+' días'; $('oCN').textContent=cambioNave()+' min';
-  $('dias').innerHTML=DIAS.map((d,i)=>`<button class="sec ${i===diaSel?'on':''}" data-d="${i}">${d}</button>`).join('');
-  document.querySelectorAll('#dias button').forEach(b=>b.onclick=()=>{ diaSel=+b.dataset.d; pintar(); });
-  const cap=capMin(), p=prever(diaSel), quiere=x=>x.e0>=1;
-  const opt=rutaOptima(p,cap,quiere), sim=rutaSimple(p,cap,quiere);
-  const ro=recorrer(opt,cap,(x,max)=>Math.min(Math.round(x.e0),max)), rs=recorrer(sim,cap,(x,max)=>Math.min(Math.round(x.e0),max));
-  const riesgo=r=>r.visitadas.reduce((a,x)=>a+x.ult,0);
-  const conTrabajo=p.filter(quiere), necesario=conTrabajo.reduce((a,x)=>a+x.servicio,0);
-  $('alcance').innerHTML=`Trabajo de cortar estimado: <b>${f1(necesario/60)} h</b> en ${conTrabajo.length} camas · Horas del equipo: <b>${f1(cap/60)} h</b> · `+
-    (necesario<=cap?'<span class="ok">alcanza para todas (sin contar el caminar)</span>':'<span class="urg">no alcanza: hay que elegir camas</span>');
-  const ruta=rutaVista==='opt'?ro.visitadas:rs.visitadas, pos={}; ruta.forEach((x,i)=>pos[x.cama]=i+1);
-  $('tabla').innerHTML='<tr><th>Cama</th><th>Rosas listas</th><th>Próximos días</th><th>En su último día</th><th>Visita</th></tr>'+
-    p.slice().sort((a,b)=>(pos[a.cama]||99)-(pos[b.cama]||99)||b.valor-a.valor).map(x=>{ const mx=Math.max(1,...p.map(y=>Math.max(y.e0,y.e1,y.e2)));
-      return `<tr><td><b>Cama ${x.cama}</b><br><span class="nota">Nave ${x.c.nave}</span></td><td><span class="num">${f0(x.e0)}</span></td>
-      <td><div class="mini"><i style="height:${Math.max(2,x.e0/mx*30)}px"></i><i class="m" style="height:${Math.max(2,x.e1/mx*30)}px"></i><i class="p" style="height:${Math.max(2,x.e2/mx*30)}px"></i></div></td>
-      <td>${x.ult>=1?`<span class="urg">${f0(x.ult)} rosas</span>`:'<span class="ok">ninguna</span>'}</td>
-      <td>${pos[x.cama]?`<span class="vis">${pos[x.cama]}</span>`:(x.e0>=1?'<span class="nota">no alcanza</span>':'<span class="nota">sin trabajo</span>')}</td></tr>`; }).join('');
-  pintarMapa(p,ruta);
-  const caja=(tit,r,gana)=>`<div class="${gana?'gana':''}"><h4>${tit}</h4><p>Caminando: <b>${f0(r.caminar)} min</b></p><p>Rosas que alcanza a cortar: <b>${f0(r.cortes)}</b></p><p>Rosas en riesgo atendidas: <b>${f0(riesgo(r))}</b></p></div>`;
-  $('compRutas').innerHTML=caja('Ruta óptima',ro,true)+caja('Ruta simple',rs,false);
-  pintarEjemplo();
-}
-function pintarMapa(p,ruta){
-  const W=460,H=310,an=22,gap=14, pos={};
-  let s=`<svg viewBox="0 0 ${W} ${H}" class="mapa">`;
-  [0,1].forEach(ni=>{ const x0=26+ni*226; s+=`<text x="${x0+95}" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#005333">Nave ${ni?4:3}</text><rect x="${x0-6}" y="32" width="202" height="240" rx="14" fill="#fff" stroke="#d9e6dd"/>`; });
-  p.forEach(x=>{ const cx=26+x.ni*226+x.ci*(an+gap)+4; pos[x.cama]=[cx+an/2,150];
-    const col=x.e0>=1?`rgba(0,139,86,${0.2+0.8*Math.min(1,x.e0/60)})`:'#e3ece6';
-    s+=`<rect x="${cx}" y="44" width="${an}" height="210" rx="6" fill="${col}" stroke="#a9cbb3"/><text x="${cx+an/2}" y="268" text-anchor="middle" font-size="10" fill="#3d5a4b">${x.cama}</text>`;
-    if(x.ult>=1) s+=`<circle cx="${cx+an/2}" cy="244" r="5" fill="#F04432"/>`; });
-  const E=[12,290]; s+=`<rect x="2" y="280" width="44" height="22" rx="6" fill="#005333"/><text x="24" y="295" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">Entrada</text>`;
-  if(ruta.length){ const pts=[E,...ruta.map(x=>pos[x.cama])]; s+=`<polyline points="${pts.map(q=>q.join(',')).join(' ')}" fill="none" stroke="#F04432" stroke-width="2.5" stroke-dasharray="6 5"/>`;
-    ruta.forEach((x,i)=>{ const [cx,cy]=pos[x.cama]; s+=`<circle cx="${cx}" cy="${cy}" r="12" fill="#F04432" stroke="#fff" stroke-width="2"/><text x="${cx}" y="${cy+4.5}" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">${i+1}</text>`; }); }
-  $('mapa').innerHTML=s+'</svg>';
-}
-$('rOpt').onclick=()=>{ rutaVista='opt'; $('rOpt').classList.add('on'); $('rSim').classList.remove('on'); pintar(); };
-$('rSim').onclick=()=>{ rutaVista='sim'; $('rSim').classList.add('on'); $('rOpt').classList.remove('on'); pintar(); };
-
-// ---------- Simulación de 21 días ----------
-function simular(estr){
-  const cap=capMin(), seg=$('seguridad').checked, cortadas={}, ultima={}; finca.forEach(c=>{ cortadas[c.cama]=new Set(); ultima[c.cama]=-1; });
-  let cortes=0, perdidas=0, caminar=0, horas=0, cursor=0, diasCortos=0;
-  for(let dia=0; dia<DIAS_SIM; dia++){
-    let orden;
-    if(estr==='fijo'){ orden=[]; for(let k=0;k<finca.length;k++){ const c=finca[(cursor+k)%finca.length]; orden.push({c,cama:c.cama,ni:c.ni,ci:c.ci}); } }
-    else { const p=prever(0,cortadas,dia), quiere=x=>x.e0>=0.5||(seg&&dia-ultima[x.cama]>=2);
-      if(p.filter(quiere).reduce((a,x)=>a+x.servicio,0)>cap) diasCortos++;
-      orden=estr==='opt'?rutaOptima(p,cap,quiere,x=>seg&&dia-ultima[x.cama]>=2):rutaSimple(p,cap,quiere); }
-    const r=recorrer(orden,cap,(x,max)=>{ const listas=x.c.rosas.map((q,i)=>i).filter(i=>!cortadas[x.cama].has(i)&&optimaReal(x.c.rosas[i],dia)); const n=Math.min(listas.length,max); listas.slice(0,n).forEach(i=>cortadas[x.cama].add(i)); return n; });
-    r.visitadas.forEach(x=>ultima[x.cama]=dia); if(estr==='fijo') cursor=(cursor+r.visitadas.length)%finca.length;
-    cortes+=r.cortes; caminar+=r.caminar; horas+=r.t/60;
-    finca.forEach(c=>c.rosas.forEach((q,i)=>{ if(!cortadas[c.cama].has(i)&&q.ini+VENTANA-1===dia) perdidas++; }));
-  }
-  return {cortes,perdidas,caminar,horas,tph:horas?cortes/horas:0,diasCortos};
-}
-function comparar(){
-  const R={fijo:simular('fijo'),sim:simular('sim'),opt:simular('opt')};
-  const col=(k,tit,desc)=>{ const r=R[k]; return `<div class="${k==='opt'?'gana':''}"><h4>${tit}</h4><p class="desc">${desc}</p>
-    <div class="fila"><span>Tallos cortados</span><b>${f0(r.cortes)}</b></div><div class="fila"><span>Rosas perdidas</span><b>${f0(r.perdidas)}</b></div>
-    <div class="fila"><span>Tallos por hora</span><b>${f0(r.tph)}</b></div><div class="fila"><span>Horas caminando</span><b>${f1(r.caminar/60)}</b></div></div>`; };
-  const pct=(a,b)=>b?Math.round((a-b)/b*100):0, o=R.opt, f=R.fijo, s=R.sim;
-  $('resSim').innerHTML=`<div class="estr">${col('fijo','Orden fijo','Cama tras cama, retomando al día siguiente donde quedó.')}${col('sim','Plan simple','Urgentes primero y luego barrido por nave.')}${col('opt','Plan con ruta óptima','La mejor combinación de camas y orden cada día.')}</div>
-    <div class="conclusion">Frente al orden fijo, la ruta óptima corta <b>${pct(o.cortes,f.cortes)>=0?'+':''}${pct(o.cortes,f.cortes)} %</b> tallos, pierde <b>${pct(o.perdidas,f.perdidas)} %</b> rosas por sobreapertura y camina <b>${f1((f.caminar-o.caminar)/60)} h menos</b> en tres semanas. Frente al plan simple: <b>${pct(o.perdidas,s.perdidas)} %</b> de rosas perdidas y <b>${f1((s.caminar-o.caminar)/60)} h</b> menos caminando.
-    ${o.diasCortos?`<br>En <b>${o.diasCortos} de 21 días</b> el tiempo no alcanzó para todas las camas con trabajo: ahí es donde el plan hace más diferencia.`:'<br>Con estas horas, el tiempo alcanzó todos los días: reduce las horas del equipo para ver qué pasa cuando no da abasto.'}</div>
-    <p class="nota">Finca simulada con supuestos ilustrativos: muestra la lógica, no promete resultados. En la finca real se compararían camas con plan y sin plan.</p>`;
-}
-
-// ---------- Verificación: ejemplo, calibración y CSV ----------
-let camaEj=null;
-function pintarEjemplo(){
-  prepararPred(); const d=diaSel; if(camaEj==null) camaEj=finca[0].cama;
-  $('selCama').innerHTML=finca.map(c=>`<option value="${c.cama}" ${c.cama===camaEj?'selected':''}>Cama ${c.cama}</option>`).join('');
-  $('ejInfo').textContent=`${DIAS[d]} · σ = ${f1(sigma())} días · ajuste por cama ${$('ajuste').checked?'activado':'desactivado'}`;
-  const c=finca.find(x=>x.cama===camaEj), F=c.rosas.map((r,i)=>({i,r,po:pOptima(r,d),pu:pUltimo(r,d)})).sort((a,b)=>a.r.mp-b.r.mp);
-  const muestra=[...new Set([0,1,2,3,4,5,6].map(k=>Math.round(k*(F.length-1)/6)))].map(k=>F[k]);
-  $('ejTabla').innerHTML='<tr><th style="text-transform:none">Rosa</th><th style="text-transform:none">μ\' · σ\'</th><th style="text-transform:none">P(óptima)</th><th style="text-transform:none">P(último)</th><th style="text-transform:none">Real</th></tr>'+
-    muestra.map(x=>`<tr><td>#${x.i+1}</td><td>${f1(x.r.mp)} · ${f3(x.r.sp)}</td><td><b>${f3(x.po)}</b></td><td>${f3(x.pu)}</td><td>${optimaReal(x.r,d)?'<span class="ok">óptima</span>':'<span class="nota">no</span>'}</td></tr>`).join('');
-  const E=F.reduce((a,x)=>a+x.po,0), U=F.reduce((a,x)=>a+x.pu,0), rE=c.rosas.filter(r=>optimaReal(r,d)).length;
-  $('ejSuma').innerHTML=`<p>Rosas en la cama: <b>${c.rosas.length}</b> · patrón de la cama: m = día ${f1(c.m)}, v = ${f3(c.v)}</p>
-    <p>Σ P(óptima) = <b style="font-size:22px">${f1(E)}</b> rosas listas esperadas</p><p>Σ P(último día) = <b>${f1(U)}</b> en riesgo</p>
-    <p>Valor = ${f1(E)} + 1,5 × ${f1(U)} = <b>${f1(E+PESO*U)}</b></p><p>Tiempo = 6 + ${f1(E)} × 16/60 = <b>${f1(MIN_CAMA+E*MIN_TALLO)} min</b></p>
-    <p class="nota">Lo que realmente pasó: <b>${rE}</b> rosas óptimas.</p>`;
-}
-$('selCama').onchange=e=>{ camaEj=+e.target.value; pintarEjemplo(); };
-function calibrar(){
-  prepararPred(); let sE=0,sR=0,err=0,n=0; const pd=[];
-  for(let d=0;d<7;d++){ let e=0,r=0; finca.forEach(c=>{ const ec=c.rosas.reduce((a,x)=>a+pOptima(x,d),0), rc=c.rosas.filter(x=>optimaReal(x,d)).length; e+=ec; r+=rc; err+=Math.abs(ec-rc); n++; }); pd.push([d,e,r]); sE+=e; sR+=r; }
-  const mx=Math.max(...pd.map(x=>Math.max(x[1],x[2])));
-  $('resCal').innerHTML=`<div class="formula">Esperadas: <b>${f0(sE)}</b> · Reales: <b>${f0(sR)}</b> · Diferencia: <b>${f1((sE-sR)/sR*100)} %</b> · Error promedio por cama y día: <b>${f1(err/n)} rosas</b></div>
-    <div class="caja">${pd.map(([d,e,r])=>`<div class="bar2"><span>${DIAS[d]}</span><div class="t"><i style="width:${e/mx*100}%;background:#008B56"></i></div><b>${f0(e)}</b></div><div class="bar2" style="margin-bottom:8px"><span class="nota">real</span><div class="t"><i style="width:${r/mx*100}%;background:#b9cfc1"></i></div><b>${r}</b></div>`).join('')}</div>`;
-}
-$('btnCal').onclick=calibrar;
-$('btnCSV').onclick=()=>{
-  prepararPred(); const d=diaSel, sig=sigma(), dec=(x,n)=>x.toFixed(n).replace('.',','), filas=[['nave','cama','rosa','inicio_real','mu','sigma','mu_ajustado','sigma_ajustado','dia','p_optima','p_ultimo_dia','optima_real']];
-  finca.forEach(c=>c.rosas.forEach((r,i)=>filas.push([c.nave,c.cama,i+1,r.ini,dec(r.mu,4),dec(sig,1),dec(r.mp,4),dec(r.sp,4),d,dec(pOptima(r,d),5),dec(pUltimo(r,d),5),optimaReal(r,d)?1:0])));
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\ufeff'+filas.map(f=>f.join(';')).join('\n')],{type:'text/csv'})); a.download='finca_simulada_plan_de_corte.csv'; a.click();
-};
-
-// ---------- Eventos ----------
-['cap','sigma','cnave','ajuste','seguridad'].forEach(id=>$(id).addEventListener('input',()=>{ pintar(); if($('resSim').innerHTML) comparar(); if($('resCal').innerHTML) calibrar(); }));
-$('btnNueva').onclick=()=>{ generarFinca(Math.floor(Math.random()*1e6)); camaEj=null; pintar(); if($('resSim').innerHTML) comparar(); if($('resCal').innerHTML) calibrar(); };
-$('btnSim').onclick=comparar;
-generarFinca(semilla); pintar();
-window.__plan={simular,generarFinca,rutaOptima,prever,recorrer,tViaje,tEntrada,calibrar};
-</script>
+<script src="js/main.js"></script>
 </body>
 </html>

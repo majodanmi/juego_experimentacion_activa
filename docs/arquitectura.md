@@ -23,8 +23,14 @@ assets/
   logo-ght-color.png      Logo para pies de página y panel en VR
   finca/fotos/<n>.jpg     Fotos originales de la cama (480 × 640)
   finca/rosas/<id>.jpg    Recorte de cada rosa etiquetada
+  maquina-del-tiempo/     Fotos de referencia de la máquina del tiempo (dia_m6.jpg … dia_p3.jpg)
+viaje-de-una-rosa/        Fase 1: index.html · css/styles.css · js/juego.js
+maquina-del-tiempo/       La rosa día a día: index.html · css/styles.css · js/main.js (módulo, Three.js)
+plan-de-corte/            Predictor y ruta óptima: index.html · css/styles.css · js/main.js
 docs/                     Esta wiki
 ```
+
+Cada página tiene su HTML (estructura), su CSS (estilos) y su JS (lógica) en archivos separados. Los logos y las fotos se cargan desde `assets/`; no hay imágenes incrustadas en el código.
 
 ## Dependencias
 
