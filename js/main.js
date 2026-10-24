@@ -387,6 +387,7 @@ function sonido(tipo){
 // Sesión
 // =====================================================================
 let modoAR=false, colocarPendiente=false;
+let modoXR=null;               // 'ar' · 'vr' · null (computador o cámara del celular)
 let cfg=null, estado='menu', tiempo=0, minZ=0, decisiones=[], resultado=null;
 const raycaster=new THREE.Raycaster(); raycaster.far=ALCANCE;
 
@@ -416,7 +417,7 @@ window.prepararSesion=function(){
   $('resumen').innerHTML=`<b>${cfg.nombre}</b> · ${cfg.modo==='practica'?'Práctica guiada':'Evaluación'}<br>
     Escenario: ${NOMBRE_ESC[cfg.escenario]} · Cama de ${cfg.largo} m · Código <b>${cfg.semilla}</b><br>
     Tiempo: ${cfg.tiempo?cfg.tiempo/60+' min':'sin límite'} · Ayudas: ${[cfg.retro&&'retroalimentación',cfg.guia&&'zona de corte'].filter(Boolean).join(', ')||'ninguna'}<br>
-    Corta solo las rosas en <b>${cfg.nombrePunto}</b>, con al menos ${MIN_TALLO*100} cm de tallo.<br>En AR basta un espacio libre de unos 3 × 2,5 m: camina unos pasos y avanza por la cama con la palanca izquierda (gafas) o con el botón ▲ Avanzar (celular o tableta).`;
+    Corta solo las rosas en <b>${cfg.nombrePunto}</b>, con al menos ${MIN_TALLO*100} cm de tallo.<br>En AR basta un espacio libre de unos 3 × 2,5 m: camina unos pasos y avanza por la cama con la palanca izquierda (gafas) o con el botón ▲ Avanzar (celular o tableta).<br>En VR puedes jugar de pie o sentado: caminas con la palanca izquierda y giras con la derecha.`;
   ir('listo');
 };
 
@@ -477,14 +478,14 @@ $('mRecolocar').addEventListener('click',()=>{
 $('mFinalizar').addEventListener('click',()=>finalizar());
 
 // --- AR con WebXR: Quest 3 (gafas) y Android con Chrome (cámara + detección del piso) ---
-window.iniciarVR=async function(){
+window.iniciarAR=async function(){
   try{
     const movil=esMovil;
     const opciones=movil
       ? {requiredFeatures:['hit-test'],optionalFeatures:['dom-overlay','local-floor'],domOverlay:{root:$('movil')}}
       : {requiredFeatures:['local-floor'],optionalFeatures:['bounded-floor','hand-tracking']};
     const ses=await navigator.xr.requestSession('immersive-ar',opciones);
-    modoAR=true; arrancar();
+    modoAR=true; modoXR='ar'; arrancar();
     rig.position.set(0,0,0); rig.rotation.set(0,0,0); camera.position.set(0,0,0); camera.rotation.set(0,0,0);
     if(movil){
       modoMovil='xr'; colocando=true; mundo.visible=false;
@@ -493,11 +494,22 @@ window.iniciarVR=async function(){
       ses.requestReferenceSpace('viewer').then(vs=>ses.requestHitTestSource({space:vs})).then(h=>hitSource=h).catch(()=>{});
     } else colocarPendiente=true;
     await renderer.xr.setSession(ses);
-    ses.addEventListener('end',()=>{ const eraMovil=!!modoMovil; salirMovil(); if(estado==='jugando') finalizar(); else if(resultado&&(eraMovil||true)) mostrarResultados(); });
+    ses.addEventListener('end',()=>{ salirMovil(); modoXR=null; if(estado==='jugando') finalizar(); else if(resultado) mostrarResultados(); });
   }catch(err){
     alert('No se pudo iniciar AR: '+err.message+(esMovil?'\nPrueba con "Usar la cámara del dispositivo".':''));
-    salirMovil();
+    salirMovil(); modoXR=null;
   }
+};
+
+// --- VR con WebXR: Quest 3. Se recorre la cama dentro del invernadero virtual ---
+window.iniciarVR=async function(){
+  try{
+    const ses=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor','bounded-floor','hand-tracking']});
+    modoAR=false; modoXR='vr'; arrancar();
+    rig.position.set(0,0,0.6); rig.rotation.set(0,0,0); camera.position.set(0,0,0); camera.rotation.set(0,0,0);
+    await renderer.xr.setSession(ses);
+    ses.addEventListener('end',()=>{ modoXR=null; rig.position.set(0,0,0); rig.rotation.set(0,0,0); if(estado==='jugando') finalizar(); else if(resultado) mostrarResultados(); });
+  }catch(err){ modoXR=null; alert('No se pudo iniciar VR: '+err.message); }
 };
 
 // --- Modo cámara: funciona en iPhone, iPad y cualquier celular con navegador moderno ---
@@ -746,7 +758,7 @@ renderer.setAnimationLoop(()=>{
     if(vr){
       giroEspera-=dt;
       // AR: colocar la cama frente al usuario, alineada con su mirada y sobre el piso real
-      if(colocarPendiente){
+      if(modoXR==='ar'&&colocarPendiente){
         const cp=camera.getWorldPosition(new THREE.Vector3()), cd=camera.getWorldDirection(new THREE.Vector3());
         if(cp.lengthSq()>0||cd.z!==-1){
           mundo.position.set(cp.x,0,cp.z); mundo.rotation.set(0,Math.atan2(-cd.x,-cd.z),0);
@@ -766,12 +778,26 @@ renderer.setAnimationLoop(()=>{
       for(const src of ses.inputSources){
         const gp=src.gamepad; if(!gp) continue;
         const ax=gp.axes[2]||0, ay=gp.axes[3]||0;
-        // En AR no se mueve la cámara (rompería la alineación con el espacio real): se desliza la cama
-        if(src.handedness==='left'&&Math.abs(ay)>0.15){ mundo.translateZ(-ay*0.9*dt); mundo.updateMatrixWorld(true); }
-        if(gp.buttons[1]&&gp.buttons[1].pressed&&giroEspera<=0){ colocarPendiente=true; giroEspera=0.8; }
+        if(modoXR==='vr'){
+          // VR: el jugador camina con la palanca izquierda y gira por pasos con la derecha
+          if(src.handedness==='left'){
+            camera.getWorldDirection(fwd); fwd.y=0; fwd.normalize(); der.crossVectors(fwd,UP);
+            rig.position.addScaledVector(fwd,-ay*1.1*dt).addScaledVector(der,ax*1.1*dt);
+          } else if(src.handedness==='right'){
+            if(Math.abs(ax)>0.7&&giroEspera<=0){ rig.rotation.y-=Math.sign(ax)*Math.PI/6; giroEspera=0.35; }
+          }
+        } else {
+          // En AR no se mueve la cámara (rompería la alineación con el espacio real): se desliza la cama
+          if(src.handedness==='left'&&Math.abs(ay)>0.15){ mundo.translateZ(-ay*0.9*dt); mundo.updateMatrixWorld(true); }
+          if(gp.buttons[1]&&gp.buttons[1].pressed&&giroEspera<=0){ colocarPendiente=true; giroEspera=0.8; }
+        }
         if(gp.buttons[5]&&gp.buttons[5].pressed){ finalizar(); break; }
       }
-      if(!colocarPendiente&&!colocando) minZ=Math.min(minZ,mundo.worldToLocal(camera.getWorldPosition(tmpV)).z);
+      if(modoXR==='vr'){
+        rig.position.x=Math.max(-0.2,Math.min(0.2,rig.position.x));
+        rig.position.z=Math.min(1.2,rig.position.z);
+        minZ=Math.min(minZ,camera.getWorldPosition(tmpV).z);
+      } else if(!colocarPendiente&&!colocando) minZ=Math.min(minZ,mundo.worldToLocal(camera.getWorldPosition(tmpV)).z);
     } else if(modoMovil==='camara'){
       if(orientacion&&performance.now()-ultimaOri<2000) aplicarOrientacion();
       else { orientacion=null; camera.rotation.set(pitch,yaw,0,'YXZ'); }
@@ -833,20 +859,27 @@ syncMenu();
 
 const hayCamara=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
 if(esMovil){ $('btnPC').style.display='none'; if(hayCamara) $('btnCam').style.display=''; }
-function notaDispositivo(arOK){
+function notaDispositivo(arOK,vrOK){
   if(esMovil) $('notaVR').textContent = arOK
     ? 'Este dispositivo permite AR completo: la cama se apoya en el piso real. Si falla, usa "Usar la cámara del dispositivo".'
     : (hayCamara?'Este dispositivo no tiene AR con WebXR (por ejemplo iPhone o iPad): usa "Usar la cámara del dispositivo".':'Este navegador no permite usar la cámara. Abre la página en HTTPS con Chrome o Safari.');
-  else $('notaVR').textContent = arOK ? 'Visor AR disponible.' : 'No se detectó visor con AR. En las Quest 3, o en un celular Android con Chrome, abre esta página (requiere HTTPS).';
+  else $('notaVR').textContent = arOK&&vrOK ? 'Visor disponible. Elige AR para ver la cama en tu propio espacio, o VR para recorrerla dentro del invernadero virtual.'
+    : arOK ? 'Visor AR disponible.' : vrOK ? 'Visor VR disponible.'
+    : 'No se detectó visor AR ni VR. En las Quest 3, o en un celular Android con Chrome (AR), abre esta página (requiere HTTPS).';
 }
-if(navigator.xr){
-  navigator.xr.isSessionSupported('immersive-ar').then(ok=>{ $('btnVR').disabled=!ok; if(esMovil&&!ok) $('btnVR').style.display='none'; notaDispositivo(ok); })
-    .catch(()=>{ if(esMovil) $('btnVR').style.display='none'; notaDispositivo(false); });
-} else { if(esMovil) $('btnVR').style.display='none'; notaDispositivo(false); }
+// Cada botón se habilita si el dispositivo permite ese modo. En el celular se ocultan los que no aplican
+// (la VR necesita gafas, así que en celular o tableta solo se ofrece AR y la cámara).
+const soporta=modo=>navigator.xr?navigator.xr.isSessionSupported(modo).catch(()=>false):Promise.resolve(false);
+Promise.all([soporta('immersive-ar'),soporta('immersive-vr')]).then(([arOK,vrOK])=>{
+  vrOK=vrOK&&!esMovil;
+  $('btnAR').disabled=!arOK; $('btnVR').disabled=!vrOK;
+  if(esMovil){ if(!arOK) $('btnAR').style.display='none'; $('btnVR').style.display='none'; }
+  notaDispositivo(arOK,vrOK);
+});
 
 // Botones del HTML: cada uno declara su acción con data-accion y, si la necesita, un argumento en data-arg.
 const ACCIONES={
-  ir:window.ir, prepararSesion:window.prepararSesion, iniciarPC:window.iniciarPC, iniciarVR:window.iniciarVR,
+  ir:window.ir, prepararSesion:window.prepararSesion, iniciarPC:window.iniciarPC, iniciarAR:window.iniciarAR, iniciarVR:window.iniciarVR,
   iniciarCamara:window.iniciarCamara, reanudar:window.reanudar, finalizar:window.finalizar, repetir:window.repetir,
   descargarCSV:window.descargarCSV,
   irRecorrido:RECORRIDO.irRecorrido, alternarRecorrido:RECORRIDO.alternarRecorrido,

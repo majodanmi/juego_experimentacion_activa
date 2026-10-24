@@ -17,7 +17,7 @@
 1. **Fase 1, El viaje de una rosa:** un juego narrativo en el que el aprendiz corta una rosa, la acompaña hasta la floristería en Miami y ve la consecuencia de su decisión. Así aprende los tres rasgos del punto de corte: color, forma y tamaño.
 2. **A, recorrido del robot:** se simula un robot que fotografía las rosas desde abajo, como las ve el trabajador.
 3. **B, banco de rosas:** personas con experiencia califican esas fotos como inmadura, óptima o sobreabierta. La plataforma mide su acuerdo con el experto de la finca.
-4. **C, entrenamiento:** el aprendiz corta rosas en una cama 3D con realidad aumentada y recibe una evaluación objetiva.
+4. **C, entrenamiento:** el aprendiz corta rosas en una cama 3D, en realidad aumentada o en realidad virtual, y recibe una evaluación objetiva.
 
 ## Nivel de desarrollo
 
@@ -27,7 +27,7 @@
 - **Recorrido del robot (A):** una simulación sobre 8 fotos reales de la finca, con las rosas detectadas marcadas en cada foto.
 - **Banco de rosas (B):** trae 73 rosas reales con la etiqueta de la empresa. Varias personas pueden calificarlas, con modo de entrenamiento. Calcula el consenso y el acuerdo (kappa de Cohen), y exporta a Excel (.xlsx) y a un dataset .zip con las fotos.
 - **Entrenamiento (C):** una cama de rosas 3D con escenarios de dificultad, entre ellos "Banco de la finca", que usa las rosas ya calificadas. Muestra una guía de la zona de corte y evalúa por categoría y por largo del tallo. Los resultados se exportan a CSV.
-- **Dispositivos:** AR en Meta Quest 3 y en Android (WebXR), cámara y giroscopio en iPhone/iPad, y vista previa 3D en el computador.
+- **Dispositivos:** en Meta Quest 3, el aprendiz elige entre AR (la cama en su propio espacio) y VR (un invernadero virtual que recorre con las palancas). También hay AR en Android (WebXR), cámara y giroscopio en iPhone/iPad, y vista previa 3D en el computador.
 
 ## Ventajas
 
@@ -52,7 +52,7 @@
 | Tipo | Uso |
 |---|---|
 | **Three.js 0.160** (desde unpkg) | Escena 3D de la cama de rosas |
-| **WebXR Device API** | Realidad aumentada en Meta Quest 3 y Android |
+| **WebXR Device API** | Realidad aumentada (Meta Quest 3 y Android) y realidad virtual (Meta Quest 3) |
 | **Cámara y sensores de movimiento** (`getUserMedia`, `DeviceOrientation`) | Modo AR en iPhone/iPad |
 | **SVG y Web Audio API** | Arte y sonido de El viaje de una rosa, generados por código sin imágenes ni audios |
 | **localStorage** | Historial de sesiones y calificaciones del banco |

@@ -92,7 +92,7 @@ Si una acción no existe, la consola muestra `Acción desconocida: …`.
 | Parámetros del cultivo | Medidas y umbrales. Ver [Parámetros del cultivo](parametros-del-cultivo.md) |
 | Geometría | Pétalos, sépalos y hojas como láminas curvas. La cabeza floral se genera según la apertura `t` (0 a 1) y se guarda en caché |
 | `construirCultivo(cfg, ar)` | Arma la cama: suelo, invernadero (solo fuera de AR), tallos instanciados, rosas y zonas de corte. Usa un generador pseudoaleatorio con semilla (`mulberry32`) para que el código de cama sea reproducible |
-| Sesión | `prepararSesion`, `iniciarPC`, `iniciarVR` (Quest/Android), `iniciarCamara` (iPhone) |
+| Sesión | `prepararSesion`, `iniciarPC`, `iniciarAR` (Quest/Android), `iniciarVR` (Quest, invernadero virtual), `iniciarCamara` (iPhone) |
 | `cortar(sel)` | Clasifica el corte (correcto, prematuro, tardío, tallo corto) y guarda la decisión |
 | `finalizar()` / `mostrarResultados()` | Calcula métricas, guarda el historial y muestra la evaluación |
 | `window.__rl` | Acceso para pruebas automáticas: `camera`, `mundo`, `flores`, `apuntar`, `cortar`, `finalizar` |
