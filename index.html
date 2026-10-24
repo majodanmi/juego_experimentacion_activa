@@ -15,7 +15,7 @@
 <section id="inicio" class="pantalla on">
   <div class="tarjeta"><div class="banda"><img src="assets/logo-ght-blanco.png" alt="GHT"><span class="lema">Where Businesses Thrive</span></div><div class="cuerpo">
     <h1>ROSE LAB <span>AR</span></h1>
-    <p class="sub">Plataforma de capacitación en el corte de rosas de exportación · Variedad roja (Freedom)<br>Realidad aumentada: la cama de rosas aparece dentro de tu propio espacio.</p>
+    <p class="sub">Plataforma de capacitación en el corte de rosas de exportación · Variedad roja (Freedom)<br>Realidad aumentada (la cama aparece dentro de tu propio espacio) o realidad virtual (recorres la cama dentro del invernadero).</p>
     <div class="fases">
       <div class="fase"><b><i>1</i> Recorrer el cultivo</b>Camina entre las camas y observa las rosas desde abajo, como en la finca.</div>
       <div class="fase"><b><i>2</i> Inspeccionar cada flor</b>Forma, tamaño y madurez. Inmaduras, en punto y sobreabiertas.</div>
@@ -208,6 +208,7 @@
     <div class="resumen" id="resumen"></div>
     <div class="controles">
       <div><b>En las gafas (Quest 3, AR)</b><br>Camina por tu espacio a lo largo del pasillo<br>Palanca izquierda: avanzar por la cama (la cama se desliza hacia ti)<br>Apunta al tallo y <kbd>gatillo</kbd> o pellizco con la mano: cortar<br><kbd>Grip</kbd> (botón lateral): recolocar la cama frente a ti<br><kbd>B</kbd> o <kbd>Y</kbd>: finalizar</div>
+      <div><b>En las gafas (Quest 3, VR)</b><br>Palanca izquierda: caminar por el pasillo<br>Palanca derecha: girar<br>Apunta al tallo y <kbd>gatillo</kbd>: cortar<br><kbd>B</kbd> o <kbd>Y</kbd>: finalizar</div>
       <div><b>En celular o tableta</b><br>Apunta la mira al tallo y toca <kbd>✂ Cortar</kbd> (o toca el tallo)<br><kbd>▲ Avanzar</kbd> / <kbd>▼ Atrás</kbd>: recorrer la cama<br><kbd>⟳ Recolocar</kbd>: volver a ubicar la cama<br>Mira hacia arriba moviendo el dispositivo</div>
       <div><b>Vista previa en el computador</b><br><kbd>W A S D</kbd>: caminar · ratón: mirar<br>Apunta al tallo y <kbd>clic</kbd>: cortar<br><kbd>Esc</kbd>: pausa · <kbd>F</kbd>: finalizar</div>
     </div>
@@ -215,10 +216,11 @@
     <div class="botones">
       <button class="sec" data-accion="ir" data-arg="config">Ajustar</button>
       <button class="prim" id="btnPC" data-accion="iniciarPC">Iniciar en este computador</button>
-      <button class="prim" id="btnVR" data-accion="iniciarVR" disabled>Entrar en AR</button>
+      <button class="prim" id="btnAR" data-accion="iniciarAR" disabled title="La cama de rosas aparece dentro de tu propio espacio">Entrar en AR</button>
+      <button class="prim" id="btnVR" data-accion="iniciarVR" disabled title="Recorres la cama dentro de un invernadero virtual">Entrar en VR</button>
       <button class="prim" id="btnCam" data-accion="iniciarCamara" style="display:none">Usar la cámara del dispositivo</button>
     </div>
-    <p class="nota" id="notaVR">Buscando visor AR…</p>
+    <p class="nota" id="notaVR">Buscando visor AR o VR…</p>
   </div></div>
 </section>
 

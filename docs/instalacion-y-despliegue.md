@@ -32,7 +32,7 @@ GitHub Pages usa HTTPS, que es lo que exigen el AR (WebXR) y la cámara del celu
 
 | Dispositivo | Navegador | Modo | Requisito |
 |---|---|---|---|
-| Meta Quest 3 | Navegador de Meta Quest | AR con passthrough (**Entrar en AR**) | HTTPS |
+| Meta Quest 3 | Navegador de Meta Quest | AR con passthrough (**Entrar en AR**) o VR en el invernadero virtual (**Entrar en VR**) | HTTPS |
 | Android | Chrome | AR con WebXR (**Entrar en AR**) | HTTPS y ARCore |
 | iPhone / iPad | Safari o Chrome | Cámara + giroscopio (**Usar la cámara del dispositivo**) | HTTPS y permiso de cámara y movimiento |
 | Computador | Chrome, Edge, Firefox, Safari, Brave | Vista previa en 3D | Servidor local o HTTPS |
@@ -41,7 +41,9 @@ GitHub Pages usa HTTPS, que es lo que exigen el AR (WebXR) y la cámara del celu
 
 1. Publica con GitHub Pages (o usa otro servidor con HTTPS).
 2. En las gafas, abre el **navegador** y entra a la dirección.
-3. Configura la sesión y toca **Entrar en AR**. Despeja un espacio de unos 3 × 2,5 m.
+3. Configura la sesión y elige el modo:
+   - **Entrar en AR:** la cama aparece en tu propio espacio. Despeja un espacio de unos 3 × 2,5 m.
+   - **Entrar en VR:** recorres la cama dentro de un invernadero virtual. Caminas con la palanca izquierda y giras con la derecha, así que se puede jugar de pie o sentado en poco espacio.
 
 ## Actualizar la versión publicada
 
