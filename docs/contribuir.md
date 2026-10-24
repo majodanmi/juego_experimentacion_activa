@@ -1,6 +1,6 @@
 # Cómo contribuir
 
-← [Parámetros del cultivo](parametros-del-cultivo.md) · [Inicio](README.md) · Siguiente: [Preguntas frecuentes](preguntas-frecuentes.md) →
+← [Máquina del tiempo y plan de corte](maquina-del-tiempo-y-plan-de-corte.md) · [Inicio](README.md) · Siguiente: [Preguntas frecuentes](preguntas-frecuentes.md) →
 
 ## Flujo de trabajo
 
