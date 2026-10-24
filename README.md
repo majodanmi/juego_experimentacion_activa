@@ -44,10 +44,6 @@ y abrir http://localhost:8000.
 - **Computador:** vista previa con WASD + ratón.
 - **Quest 3 o celular (AR):** WebXR y la cámara exigen **HTTPS**, por ejemplo publicando el repositorio con GitHub Pages.
 
-https://horizon.meta.com/shares/FZqkw5sTDDvnDF4s00ZRZfB6VkxOkG
-
-https://horizon.meta.com/shares/aomstw7iOZmKotLpjUT4mamNfQnrQX
-
 
 
 
