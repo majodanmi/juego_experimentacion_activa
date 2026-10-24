@@ -2,6 +2,8 @@
 
 Plataforma de capacitación en el corte de rosas de exportación (variedad roja Freedom) con realidad aumentada. Proyecto de Sabana Hack 2026.
 
+🌹 **Jugar El viaje de una rosa (fase 1):** https://majodanmi.github.io/juego_experimentacion_activa/viaje-de-una-rosa/index.html
+
 📖 **Documentación completa: [wiki del proyecto](docs/README.md)**: guías para aprendices y formadores, banco de rosas, arquitectura y despliegue.
 
 ## Ciclo completo
