@@ -2,6 +2,8 @@
 
 Plataforma de capacitación en el corte de rosas de exportación (variedad roja Freedom) con realidad aumentada. Proyecto de Sabana Hack 2026.
 
+📖 **Documentación completa: [wiki del proyecto](docs/README.md)**: guías para aprendices y formadores, banco de rosas, arquitectura y despliegue.
+
 ## Ciclo completo
 
 - **A · Recorrido del robot:** simulación de un robot que recorre el pasillo y fotografía las rosas desde abajo (fotos reales de la finca).
@@ -23,6 +25,7 @@ js/util/exportar.js       CSV, ZIP y Excel sin librerías externas
 assets/                   Logos
 assets/finca/fotos/       Fotos originales del recorrido (desde abajo, en la cama)
 assets/finca/rosas/       Recorte de cada rosa etiquetada
+docs/                     Wiki del proyecto
 ```
 
 Three.js 0.160 se carga desde unpkg mediante el `importmap` de `index.html`. Las calificaciones y el historial se guardan en el `localStorage` del navegador.
