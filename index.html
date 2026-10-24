@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/banco.css">
 </head>
 <body>
 
@@ -21,9 +22,118 @@
       <div class="fase"><b><i>3</i> Cortar o dejar</b>Ubica la tijera en el tallo de la rosa correcta. Si no está lista, sigue.</div>
       <div class="fase"><b><i>4</i> Evaluar el trabajo</b>Cortes correctos, prematuros, flores omitidas y tiempo.</div>
     </div>
+    <h3>Ciclo completo de Rose Lab</h3>
+    <div class="ciclo">
+      <button class="paso" data-accion="irRecorrido"><i>A</i><b>Recorrido del robot</b><span>El robot camina por el pasillo y fotografía las rosas desde abajo, como las ve el trabajador.</span></button>
+      <button class="paso" data-accion="irBanco"><i>B</i><b>Banco de rosas</b><span>Cada rosa queda calificada como inmadura, óptima o sobreabierta, y se compara con el experto de la finca.<em id="estadoBanco"></em></span></button>
+      <button class="paso" data-accion="ir" data-arg="config"><i>C</i><b>Entrenamiento</b><span>El aprendiz practica en la cama virtual armada con las rosas reales calificadas.</span></button>
+    </div>
     <div class="leyenda"><div><svg width="46" height="46" viewBox="0 0 40 40"><path d="M20 26 L20 39" stroke="#579966" stroke-width="2.5"/><path d="M20 8 C 12 12,11 24,20 26 C 29 24,28 12,20 8Z" fill="#752333"/><path d="M20 26 C 14 24, 12 20, 13 16 M20 26 C 26 24, 28 20, 27 16" stroke="#8aa83f" stroke-width="2" fill="none"/><circle cx="20" cy="17" r="1.5" fill="#3e0e17"/></svg><span><b>Inmadura</b>Botón pequeño y en punta, sépalos pegados</span></div><div><svg width="46" height="46" viewBox="0 0 40 40"><path d="M20 26 L20 39" stroke="#579966" stroke-width="2.5"/><path d="M20 10 C 9 12,8 24,20 26 C 32 24,31 12,20 10Z" fill="#bc1a35"/><path d="M20 26 C 14 24, 12 20, 13 18 M20 26 C 26 24, 28 20, 27 18" stroke="#3b6e2f" stroke-width="2" fill="none"/><circle cx="20" cy="17" r="3.7" fill="#a80014"/></svg><span><b>En punto</b>Botón en copa, cabeza recta, sépalos abajo</span></div><div><svg width="46" height="46" viewBox="0 0 40 40"><path d="M20 26 L20 39" stroke="#579966" stroke-width="2.5"/><path d="M20 10 C 6 12,5 24,20 26 C 35 24,34 12,20 10Z" fill="#cc5176"/><path d="M20 26 C 14 24, 12 20, 13 20 M20 26 C 26 24, 28 20, 27 20" stroke="#3b6e2f" stroke-width="2" fill="none"/><circle cx="20" cy="17" r="5.9" fill="#b3495f"/></svg><span><b>Sobreabierta</b>Flor abierta, rojo más claro y rosado</span></div></div>
-    <div class="botones"><button class="prim" data-accion="ir" data-destino="config">Configurar sesión</button></div>
+    <div class="botones"><button class="prim" data-accion="ir" data-arg="config">Configurar sesión</button></div>
     <div class="pie"><span>ROSE LAB AR · Capacitación en corte de rosas · Sabana Hack 2026</span><img src="assets/logo-ght-color.png" alt="GHT"></div>
+  </div></div>
+</section>
+
+<!-- ============ A · RECORRIDO DEL ROBOT ============ -->
+<section id="recorrido" class="pantalla alta">
+  <div class="tarjeta ancha"><div class="banda"><img src="assets/logo-ght-blanco.png" alt="GHT"><span class="lema">Where Businesses Thrive</span></div><div class="cuerpo">
+    <h2>A · Recorrido del robot por la cama</h2>
+    <div class="chips"><span class="tag sim">Simulación del recorrido (propuesta)</span><span class="tag real">Fotos reales de la finca · variedad Freedom</span></div>
+    <p class="sub">El robot cuadrúpedo avanza por el pasillo con la cámara a la altura del trabajador, mirando las rosas desde abajo. Cada foto queda registrada con cama, posición y hora.</p>
+    <div class="rec">
+      <div id="mapaRobot"></div>
+      <div>
+        <div class="feed"><img id="feedImg" alt="Cámara del robot"><div id="cajas"></div><div class="rotulo">CÁMARA DEL ROBOT</div></div>
+        <div class="info" id="feedInfo"></div>
+        <div class="info" id="contador"></div>
+      </div>
+    </div>
+    <h3>Rosas recortadas por el detector</h3>
+    <div class="tira" id="tira"></div>
+    <h3>Bitácora del recorrido</h3>
+    <div class="bitacora" id="bitacora"></div>
+    <div class="explica"><b>¿Cómo encuentra las rosas?</b> En la versión real, un detector de objetos entrenado con el conjunto público <b>RoseBlooming</b> (Universidad de Kioto: 519 fotos de invernadero con más de 7.000 rosas marcadas) y ajustado con las calificaciones de los expertos de esta finca. En esta demo, los recuadros son las rosas que la empresa marcó en sus propias fotos de la cama.</div>
+    <div class="botones">
+      <button class="sec" data-accion="ir" data-arg="inicio">Inicio</button>
+      <button class="prim" id="btnRec" data-accion="alternarRecorrido">Iniciar recorrido</button>
+      <button class="sec" data-accion="saltarRecorrido">Saltar animación</button>
+      <button class="sec" data-accion="reiniciarRecorrido">Reiniciar</button>
+      <button class="prim" id="btnEnviarBanco" data-accion="enviarAlBanco" style="display:none">Enviar al banco de rosas →</button>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ B · BANCO DE ROSAS ============ -->
+<section id="banco" class="pantalla alta">
+  <div class="tarjeta ancha"><div class="banda"><img src="assets/logo-ght-blanco.png" alt="GHT"><span class="lema">Where Businesses Thrive</span></div><div class="cuerpo">
+    <h2>B · Banco de rosas: calificación del experto</h2>
+    <div class="chips"><span class="tag real">Etiquetas reales de la empresa</span><span class="tag real">Calificación en vivo</span><span class="tag real">Alimenta la cama virtual</span></div>
+
+    <div id="bancoResumen">
+      <div id="bancoVacio" style="display:none">
+        <p>El banco está vacío. Carga el dataset de la finca (fotos reales con las etiquetas de la empresa) o ejecuta primero el recorrido del robot.</p>
+        <div class="botones">
+          <button class="prim" data-accion="enviarAlBanco">Cargar dataset de la finca</button>
+          <button class="sec" data-accion="irRecorrido">Ir al recorrido del robot</button>
+          <label class="sec boton-archivo">Agregar foto de una rosa<input class="fotoRosa" type="file" accept="image/*" capture="environment"></label>
+        </div>
+      </div>
+      <div id="bancoLleno">
+        <div class="metricas" id="bancoMet"></div>
+        <div class="resumen" id="bancoAcuerdo"></div>
+        <h3>Calificadores</h3>
+        <div id="bancoCal"></div>
+        <div class="fila4">
+          <div class="campo"><label for="nuevoCalif">Nuevo calificador</label><input id="nuevoCalif" type="text"></div>
+          <div class="campo"><label for="rolCalif">Rol</label><select id="rolCalif"><option>Aprendiz</option><option>Formador</option><option>Cortador con experiencia</option><option>Supervisor de calidad</option><option>Jurado o visitante</option><option>Otro</option></select></div>
+          <div class="campo"><label for="expCalif">Años de experiencia</label><input id="expCalif" type="number" min="0" max="60" step="0.5" placeholder="Opcional"></div>
+          <div class="campo"><label for="cantCalif">Cuántas rosas</label><select id="cantCalif"><option value="15">15 (muestra)</option><option value="30">30</option><option value="todas">Todas</option></select></div>
+          <div class="campo"><button class="prim ancho" data-accion="calificarDesdeCampo">Calificar rosas</button></div>
+        </div>
+        <p class="nota">Para los modelos se guarda un perfil anónimo (código, rol y experiencia); los nombres solo se usan en esta pantalla.</p>
+        <label class="check"><input id="modoEntreno" type="checkbox" checked> Modo entrenamiento: después de cada respuesta, mostrar lo que dijo la finca</label>
+        <p class="nota">La muestra de 15 o 30 rosas está equilibrada entre inmaduras, óptimas, sobreabiertas y casos difíciles. Las rosas en las que no hay acuerdo se marcan como <b>casos difíciles</b>.</p>
+        <h3>Rosas del banco</h3>
+        <div class="grid-rosas" id="bancoGrid"></div>
+        <div class="botones">
+          <button class="sec" data-accion="ir" data-arg="inicio">Inicio</button>
+          <label class="sec boton-archivo">+ Foto de una rosa (jurado)<input class="fotoRosa" type="file" accept="image/*" capture="environment"></label>
+          <button class="sec" data-accion="exportarExcel">Descargar Excel (.xlsx)</button>
+          <button class="sec" data-accion="exportarDataset">Dataset para modelos (.zip con fotos)</button>
+          <button class="sec" data-accion="reiniciarBanco">Reiniciar banco</button>
+          <button class="prim" data-accion="enviarARoseLab">Enviar a Rose Lab →</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="bancoCalificar" style="display:none">
+      <div class="cal-cabecera"><span id="calQuien"></span><span id="calProg"></span></div>
+      <div class="progreso"><i id="calBarra"></i></div>
+      <div class="cal">
+        <div>
+          <div class="foto"><img id="calImg" alt="Rosa a calificar"><div id="calResp" class="calresp" style="display:none"></div></div>
+          <div class="info" id="calMeta"></div>
+          <div class="bots">
+            <button class="et-INM" data-accion="calificar" data-arg="INM">Inmadura<small>No cortar</small></button>
+            <button class="et-OPT" data-accion="calificar" data-arg="OPT">Óptima<small>Cortar</small></button>
+            <button class="et-PAS" data-accion="calificar" data-arg="PAS">Sobreabierta<small>Ya pasó</small></button>
+          </div>
+          <label class="check"><input id="calDuda" type="checkbox"> Tengo dudas con esta rosa <span class="nota">(tecla D)</span></label>
+          <div class="botones">
+            <button class="sec" data-accion="calificar" data-arg="X">No se ve bien / descartar</button>
+            <button class="sec" data-accion="vistaResumen">Volver al resumen</button>
+          </div>
+        </div>
+        <div class="guia"><b>Guía de la finca</b><svg viewBox="0 0 230 110"><g fill="none" stroke-width="5" stroke-linejoin="round">
+          <polygon points="28,95 62,95 45,25" stroke="#c0392b"/><path d="M90,18 Q92,95 115,95 Q138,95 140,18" stroke="#2f9e55"/><path d="M160,40 Q168,95 190,95 Q212,95 220,40 M152,30 Q190,10 228,30" stroke="#a24bd0"/></g>
+          <g fill="#3d5a4b" font-size="12" text-anchor="middle"><text x="45" y="108">Inmadura</text><text x="115" y="108">Óptima</text><text x="190" y="108">Sobreabierta</text></g></svg>
+          <p><b>Óptima (punto de corte):</b> caracol definido mostrando centro, color vivo e intenso y patrón de copa.</p>
+          <p><b>Inmadura:</b> cabeza más pequeña, rojo más oscuro, sépalos pegados a los pétalos. Cortarla así es la falla más común.</p>
+          <p><b>Sobreabierta:</b> ya pasó el punto de corte.</p>
+          <p class="nota">Criterio de la empresa para la variedad Freedom. Teclas: 1, 2, 3, 0 descartar, D marcar duda.</p>
+        </div>
+      </div>
+    </div>
   </div></div>
 </section>
 
@@ -55,6 +165,7 @@
           <option value="comun">Error más común: inmaduro vs. punto</option>
           <option value="dificiles">Casos difíciles (follaje, contraluz, límites)</option>
           <option value="personalizado">Personalizado</option>
+          <option value="banco" id="optBanco" disabled>Banco de la finca (aún vacío)</option>
         </select></div>
       <div class="campo"><label for="largo">Longitud de la cama</label>
         <select id="largo"><option value="10">10 m</option><option value="20" selected>20 m</option><option value="30">30 m</option></select></div>
@@ -70,7 +181,7 @@
       <div class="prop"><span><i class="punto inm"></i>Inmaduras</span><input id="pInm" type="range" min="0" max="100" value="45"><b id="vInm">45%</b></div>
       <div class="prop"><span><i class="punto opt"></i>En punto</span><input id="pOpt" type="range" min="0" max="100" value="40"><b id="vOpt">40%</b></div>
       <div class="prop"><span><i class="punto pas"></i>Sobreabiertas</span><input id="pPas" type="range" min="0" max="100" value="15"><b id="vPas">15%</b></div>
-      <div class="nota">Al mover una proporción, el escenario cambia a Personalizado.</div>
+      <div class="nota">Al mover una proporción, el escenario cambia a Personalizado. En "Banco de la finca" la proporción la definen las rosas reales calificadas.</div>
     </div>
     <div class="fila">
       <div class="campo"><label for="semilla">Código de cama</label><input id="semilla" type="text"></div>
@@ -84,7 +195,7 @@
     <div class="nota" id="notaAyudas"></div>
 
     <div class="botones">
-      <button class="sec" data-accion="ir" data-destino="inicio">Volver</button>
+      <button class="sec" data-accion="ir" data-arg="inicio">Volver</button>
       <button class="prim" data-accion="prepararSesion">Continuar</button>
     </div>
   </div></div>
@@ -102,7 +213,7 @@
     </div>
     <p class="nota">Si la rosa no está lista, no la cortes: sigue a la siguiente. La sesión termina al llegar al final de la cama o al acabar el tiempo.</p>
     <div class="botones">
-      <button class="sec" data-accion="ir" data-destino="config">Ajustar</button>
+      <button class="sec" data-accion="ir" data-arg="config">Ajustar</button>
       <button class="prim" id="btnPC" data-accion="iniciarPC">Iniciar en este computador</button>
       <button class="prim" id="btnVR" data-accion="iniciarVR" disabled>Entrar en AR</button>
       <button class="prim" id="btnCam" data-accion="iniciarCamara" style="display:none">Usar la cámara del dispositivo</button>
@@ -132,11 +243,12 @@
     <div id="resConf"></div>
     <h3>Detalle de decisiones</h3>
     <table id="resTabla"></table>
+    <div id="resBanco"></div>
     <h3>Historial de sesiones</h3>
     <div class="hist"><table id="resHist"></table></div>
     <div class="botones">
       <button class="prim" data-accion="repetir">Repetir esta cama</button>
-      <button class="sec" data-accion="ir" data-destino="config">Nueva configuración</button>
+      <button class="sec" data-accion="ir" data-arg="config">Nueva configuración</button>
       <button class="sec" data-accion="descargarCSV">Descargar historial (CSV)</button>
     </div>
     <div class="pie"><span>ROSE LAB AR · Capacitación en corte de rosas · Sabana Hack 2026</span><img src="assets/logo-ght-color.png" alt="GHT"></div>

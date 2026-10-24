@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { BANCO } from './banco/banco.js';
+import * as RECORRIDO from './banco/recorrido.js';
 
 // =====================================================================
 // PARÁMETROS DEL CULTIVO (ajustar con la finca)
@@ -256,8 +258,16 @@ function construirCultivo(cfg,ar=false){
     estandar:{p:[45,40,15], inm:[0.0,0.34], opt:[0.5,0.72], pas:[0.88,1.0]},
     comun:{p:[55,45,0], inm:[0.22,0.39], opt:[0.46,0.68], pas:[0.86,1.0]},
     dificiles:{p:[40,40,20], inm:[0.3,0.41], opt:[0.43,0.79], pas:[0.81,0.93]},
-    personalizado:{p:[cfg.pInm,cfg.pOpt,cfg.pPas], inm:[0.0,0.36], opt:[0.48,0.74], pas:[0.86,1.0]}
+    personalizado:{p:[cfg.pInm,cfg.pOpt,cfg.pPas], inm:[0.0,0.36], opt:[0.48,0.74], pas:[0.86,1.0]},
+    banco:{p:BANCO.conteos(), inm:[0.0,0.34], opt:[0.5,0.72], pas:[0.88,1.0]}
   }[cfg.escenario];
+  // Banco de la finca: cada rosa virtual corresponde a una rosa real calificada por el experto
+  const RANGO_DIFICIL={inm:[0.36,0.41], opt:[0.43,0.5], pas:[0.81,0.86]};
+  let bancoLista=null, kB=0;
+  if(cfg.escenario==='banco'){
+    bancoLista=BANCO.lista().slice();
+    for(let i=bancoLista.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [bancoLista[i],bancoLista[j]]=[bancoLista[j],bancoLista[i]]; }
+  }
   const sumaP=preset.p[0]+preset.p[1]+preset.p[2]||1;
   const nFlores=Math.max(4,Math.round(L*cfg.densidad));
   const nVacios=Math.round(L*0.5);
@@ -284,15 +294,23 @@ function construirCultivo(cfg,ar=false){
 
   for(const s of [-1,1]){
     for(let i=0;i<nFlores;i++){
-      const r=rnd()*sumaP;
-      const tipo=r<preset.p[0]?'inm':r<preset.p[0]+preset.p[1]?'opt':'pas';
-      const t=R(...preset[tipo]);
+      let tipo, t, itemB=null;
+      if(bancoLista&&bancoLista.length){
+        itemB=bancoLista[kB++%bancoLista.length];
+        tipo={INM:'inm',OPT:'opt',PAS:'pas'}[itemB.label];
+        t=R(...(itemB.dificil?RANGO_DIFICIL[tipo]:preset[tipo]));
+      } else {
+        const r=rnd()*sumaP;
+        tipo=r<preset.p[0]?'inm':r<preset.p[0]+preset.p[1]?'opt':'pas';
+        t=R(...preset[tipo]);
+      }
       const z=R(-0.6,-L+0.6);
       const bajo=ruido&&rnd()<0.3;
       const cabeza=new THREE.Vector3(s*(PASILLO/2+R(-0.02,0.2)), bajo?R(1.55,1.72):R(1.85,2.2), z);
       const base=new THREE.Vector3(s*(PASILLO/2+R(0.2,0.4)), R(1.05,1.2), z+R(-0.1,0.1));
       const f=colocarTallo(base,cabeza,true,t);
       f.t=t; f.estado=estadoDe(t); f.lado=s; f.cortada=false; f.dificil=ruido;
+      if(itemB){ f.banco=itemB.id; f.bancoLabel=itemB.label; f.bancoDificil=itemB.dificil; f.estado={INM:'inmadura',OPT:'punto',PAS:'sobreabierta'}[itemB.label]; }
       // cabeza
       const geo=geoCabeza(t);
       const grupo=new THREE.Group(); grupo.position.copy(cabeza);
@@ -386,12 +404,15 @@ function leerCfg(){
 window.ir=function(id){
   document.querySelectorAll('.pantalla').forEach(p=>p.classList.toggle('on',p.id===id));
   if(id==='config'&&!$('semilla').value) $('semilla').value=Math.random().toString(36).slice(2,6).toUpperCase();
+  if(id==='config'){ BANCO.refrescarOpcion(); syncMenu(); }
+  if(id==='inicio') BANCO.refrescarInicio();
 };
 
-const NOMBRE_ESC={estandar:'Cama estándar',comun:'Error más común',dificiles:'Casos difíciles',personalizado:'Personalizado'};
+const NOMBRE_ESC={estandar:'Cama estándar',comun:'Error más común',dificiles:'Casos difíciles',personalizado:'Personalizado',banco:'Banco de la finca'};
 window.prepararSesion=function(){
   cfg=leerCfg();
   if(cfg.escenario==='personalizado'&&cfg.pInm+cfg.pOpt+cfg.pPas===0){alert('La proporción de flores no puede ser 0%.');return;}
+  if(cfg.escenario==='banco'&&!BANCO.lista().length){alert('El banco aún no tiene rosas calificadas por el experto.');return;}
   $('resumen').innerHTML=`<b>${cfg.nombre}</b> · ${cfg.modo==='practica'?'Práctica guiada':'Evaluación'}<br>
     Escenario: ${NOMBRE_ESC[cfg.escenario]} · Cama de ${cfg.largo} m · Código <b>${cfg.semilla}</b><br>
     Tiempo: ${cfg.tiempo?cfg.tiempo/60+' min':'sin límite'} · Ayudas: ${[cfg.retro&&'retroalimentación',cfg.guia&&'zona de corte'].filter(Boolean).join(', ')||'ninguna'}<br>
@@ -567,7 +588,8 @@ function cortar(sel){
   else if(f.estado==='sobreabierta'){ tipo='tardio'; txt='Sobreabierta: ya pasó el punto de corte'; }
   else if(largo<MIN_TALLO){ tipo='tallo_corto'; txt=`Tallo corto: ${Math.round(largo*100)} cm (mín. ${MIN_TALLO*100})`; }
   else { tipo='correcto'; txt=`Correcto · ${cfg.nombrePunto} · tallo ${Math.round(largo*100)} cm`; }
-  decisiones.push({tipo,estado:f.estado,t:+f.t.toFixed(2),largo:Math.round(largo*100),tiempo:Math.round(tiempo)});
+  if(f.banco) txt+=f.bancoDificil?' · caso difícil según la finca':' · rosa real de la finca';
+  decisiones.push({tipo,estado:f.estado,t:+f.t.toFixed(2),largo:Math.round(largo*100),tiempo:Math.round(tiempo),banco:f.banco||null});
   sonido('snip');
   if(cfg.retro&&cfg.modo==='practica'){ mostrarFeedback(sel.punto,(tipo==='correcto'?'✔ ':'✖ ')+txt,tipo==='correcto'); setTimeout(()=>sonido(tipo==='correcto'?'bien':'mal'),90); }
 }
@@ -664,6 +686,9 @@ function mostrarResultados(){
     ['Flores omitidas',r.omitidas,'Rosas en punto que quedaron en la planta'],
     ['Total de cortes',r.cortes,'']];
   $('resTabla').innerHTML='<tr><th>Resultado</th><th>Cantidad</th><th>Qué significa</th></tr>'+filas.map(f=>`<tr><td>${f[0]}</td><td><b>${f[1]}</b></td><td class="nota">${f[2]}</td></tr>`).join('');
+  const datosBanco=(cfg&&cfg.escenario==='banco')?flores.filter(f=>f.banco&&(f.cortada||(f.estado==='punto'&&f.cabeza.z>=minZ-0.3)))
+    .map(f=>({id:f.banco,cortada:f.cortada,label:f.bancoLabel,dificil:f.bancoDificil})):[];
+  $('resBanco').innerHTML=BANCO.htmlResultados(datosBanco);
   let h=[]; try{h=JSON.parse(localStorage.getItem('roselab_historial')||'[]');}catch(err){}
   $('resHist').innerHTML='<tr><th>Fecha</th><th>Aprendiz</th><th>Modo</th><th>Código</th><th>Conf.</th><th>Omit.</th><th>Tiempo</th></tr>'+
     h.slice(0,30).map(x=>`<tr><td>${x.fecha}</td><td>${x.nombre}</td><td>${x.modo==='practica'?'Práctica':'Evaluación'}</td><td>${x.semilla}</td><td>${x.conformidad}%</td><td>${x.omitidas}</td><td>${fmt(x.tiempo)}</td></tr>`).join('');
@@ -791,7 +816,7 @@ addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updat
 function syncMenu(){
   const pers=$('escenario').value==='personalizado';
   if(!pers){
-    const p={estandar:[45,40,15],comun:[55,45,0],dificiles:[40,40,20]}[$('escenario').value];
+    const p=$('escenario').value==='banco'?BANCO.porcentajes():{estandar:[45,40,15],comun:[55,45,0],dificiles:[40,40,20]}[$('escenario').value];
     $('pInm').value=p[0];$('pOpt').value=p[1];$('pPas').value=p[2];
   }
   $('vInm').textContent=$('pInm').value+'%';$('vOpt').textContent=$('pOpt').value+'%';$('vPas').textContent=$('pPas').value+'%';
@@ -819,10 +844,18 @@ if(navigator.xr){
     .catch(()=>{ if(esMovil) $('btnVR').style.display='none'; notaDispositivo(false); });
 } else { if(esMovil) $('btnVR').style.display='none'; notaDispositivo(false); }
 
-// Botones del HTML: cada uno declara su acción con data-accion (y data-destino para ir()).
+// Botones del HTML: cada uno declara su acción con data-accion y, si la necesita, un argumento en data-arg.
+const ACCIONES={
+  ir:window.ir, prepararSesion:window.prepararSesion, iniciarPC:window.iniciarPC, iniciarVR:window.iniciarVR,
+  iniciarCamara:window.iniciarCamara, reanudar:window.reanudar, finalizar:window.finalizar, repetir:window.repetir,
+  descargarCSV:window.descargarCSV,
+  irRecorrido:RECORRIDO.irRecorrido, alternarRecorrido:RECORRIDO.alternarRecorrido,
+  saltarRecorrido:RECORRIDO.saltarRecorrido, reiniciarRecorrido:RECORRIDO.reiniciarRecorrido,
+  ...BANCO
+};
 document.querySelectorAll('[data-accion]').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const accion=window[btn.dataset.accion];
-    if(btn.dataset.destino) accion(btn.dataset.destino); else accion();
-  });
+  const accion=ACCIONES[btn.dataset.accion];
+  if(!accion){ console.warn('Acción desconocida:',btn.dataset.accion); return; }
+  btn.addEventListener('click',()=>accion(btn.dataset.arg));
 });
+BANCO.refrescarInicio();
